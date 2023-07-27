@@ -137,10 +137,11 @@ class MapFlutterState extends State<MapFlutter> {
                     showTopButton: false,
                     showCloseButton: true,
                     dialogBody: Container(
-                      width: 300,
-                      height: 300,
+                      //width: 300,
+                      height: 2350,
+                        //constraints:  const BoxConstraints(minWidth: 200.0, maxWidth: 300, minHeight: 100.0, maxHeight: 235),
                       child: ListView.separated(
-                        physics: const NeverScrollableScrollPhysics(),
+                        physics: const ScrollPhysics(),
                         itemCount: value.length,
                         shrinkWrap: true,
                         separatorBuilder: (BuildContext context, int index) =>

@@ -23,7 +23,7 @@ showAlertDialog({
 }){
   return showDialog(
       context: context,
-      barrierDismissible: true,
+      barrierDismissible: false,
       barrierColor: Colors.transparent,
       builder: (context) {
         return AlertDialog(
@@ -37,16 +37,16 @@ showAlertDialog({
               child: Container(
                   color: Colors.transparent,
                   width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
+                  height: MediaQuery.of(context).size.height - 50,
                   alignment: Alignment.center,
                   child: Container(
-                    constraints:  const BoxConstraints(minWidth: 200.0, maxWidth: 300, minHeight: 100.0, maxHeight: 600),
+                    constraints:  const BoxConstraints(minWidth: 200.0, maxWidth: 300, minHeight: 100.0, maxHeight: 550),
                     decoration: BoxDecoration(
 
                       borderRadius: BorderRadius.circular(11),
                       color: darkBlue,
                     ),
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20 , 20),
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20 , 10),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [

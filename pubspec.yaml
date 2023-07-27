@@ -81,7 +81,7 @@ flutter_native_splash:
 
 flutter_launcher_icons:
   ios: true
-  android: false
+  android: true
   image_path: "asset/logo.png"
   remove_alpha_ios: true
   windows:
