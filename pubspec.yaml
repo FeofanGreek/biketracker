@@ -53,6 +53,12 @@ dependencies:
   win32: ^5.0.0
   wakelock_plus: ^1.1.1
   mask_text_input_formatter: ^2.4.0
+  motion_sensors: ^0.1.0
+  reorderables: ^0.6.0
+  fl_chart: ^0.63.0
+  flutter_webrtc: ^0.9.36
+  flutter_background: ^1.2.0
+  sdp_transform: ^0.3.2
 
 
 

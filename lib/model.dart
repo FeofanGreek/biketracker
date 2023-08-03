@@ -21,9 +21,10 @@ class Track{
   ///trackID
   int? trackID =0;
   ///track name
-  String? name = DateFormat.yMMMd('ru').format(DateTime.now()) + ' ' + DateFormat.Hms('ru').format(DateTime.now());
+  String? name = '${DateFormat.yMMMd('ru').format(DateTime.now())} ${DateFormat.Hms('ru').format(DateTime.now())}';
   DateTime? startTime = DateTime.now();
   DateTime? stopTime = DateTime.now();
+  DateTime? startCircle = DateTime.now();
   ///speed km/h
   double speed = 0;
   List speeds = [];
@@ -35,8 +36,14 @@ class Track{
   double currentHeigth = 0;
   ///maxHeight per track m
   double? maxHeight = 0;
+  ///массив высот, для отображения на графики и записи в БД
+  List heightStory = [];
   ///track duration in seconds
   Duration? trackDuration = const Duration(seconds: 0);
+  ///circle duration in seconds
+  Duration? circleDuration = const Duration(seconds: 0);
+  ///circle duration story
+  List<Duration> circlesStory = [];
   ///current distance track in meters to double kilometers
   double? currentDistance = 0;
   double cumulativeDistance = 0;
@@ -70,23 +77,27 @@ class Track{
   Future<bool>stopRecord()async{
     recordInProgress = false;
     await db.recordTrack(trackModel).then((value){
-      name = DateFormat.yMMMd('ru').format(DateTime.now()) + ' ' + DateFormat.Hms('ru').format(DateTime.now());
+      name = '${DateFormat.yMMMd('ru').format(DateTime.now())} ${DateFormat.Hms('ru').format(DateTime.now())}';
       middleSpeed = 0;
       maxSpeed = 0;
       maxHeight = 0;
       ploylinePositions = [];
       positions = [];
       trackDuration = Duration(seconds: 0);
+      circleDuration = Duration(seconds: 0);
+      //circlesStory = [];
       stopTime = DateTime.now();
+      startCircle = DateTime.now();
       trackID = value;
       currentDistance = 0;
+      heightStory = [];
     });
     return true;
   }
 
   ///starting record track
   startRecord(){
-    name = DateFormat.yMMMd('ru').format(DateTime.now()) + ' ' + DateFormat.Hms('ru').format(DateTime.now());
+    name = '${DateFormat.yMMMd('ru').format(DateTime.now())} ${DateFormat.Hms('ru').format(DateTime.now())}';
     startTime = DateTime.now();
     trackID = 0;
     recordInProgress = true;
@@ -96,7 +107,11 @@ class Track{
     ploylinePositions = [];
     positions = [];
     trackDuration = Duration(seconds: 0);
+    circleDuration = Duration(seconds: 0);
+    circlesStory = [];
     startTime = DateTime.now();
+    startCircle = DateTime.now();
+    heightStory = [];
   }
 
 
@@ -112,10 +127,12 @@ class Track{
       maxSpeed = maxSpeed! < position.speed * 3.6  ? position.speed * 3.6 : maxSpeed;
       ///currentHeight m
       currentHeigth = position.altitude;
+      heightStory.add(currentHeigth);
       ///maxHeight per track m
       maxHeight = maxHeight! < position.altitude ? position.altitude : maxHeight;
       ///track duration in seconds
       trackID == 0 && recordInProgress ? trackDuration = Duration(seconds: DateTime.now().difference(startTime!).inSeconds) : null;
+      trackID == 0 && recordInProgress ? circleDuration = Duration(seconds: DateTime.now().difference(startCircle!).inSeconds) : null;
       try{
         cumulativeDistance = prefs.getDouble('cumulative') ?? 0;
       }catch(e){
