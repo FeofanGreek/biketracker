@@ -22,7 +22,7 @@ class _LineChartState extends State<LineChartWidget> {
     return Container(
       height: (trackModel.maxHeight! > 0 ? 130 : 10),
       width: MediaQuery.of(context).size.width,
-      margin: const EdgeInsets.fromLTRB(0, 0, 0 , 30),
+      margin: EdgeInsets.fromLTRB(0, 0, 0 , MediaQuery.of(context).viewInsets.bottom),
       child: LineChart(
           mainData()
       ),
@@ -131,7 +131,7 @@ class _LineChartState extends State<LineChartWidget> {
           //   FlSpot(5, 3),
           //   FlSpot(6, 4),
           // ],
-          spots: trackModel.heightStory.asMap().map((index, e) => MapEntry(index, FlSpot(index.toDouble(), e))).values.toList().cast<FlSpot>(),
+          spots: trackModel.heightStory.asMap().map((index, e) => MapEntry(index, FlSpot(index.toDouble().roundToDouble(), e))).values.toList().cast<FlSpot>(),
           isCurved: true,
           gradient: LinearGradient(
             begin: Alignment.topCenter, end: Alignment.bottomCenter,

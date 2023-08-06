@@ -46,9 +46,9 @@ class _P2PAppState extends State<P2PApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-          appBar: AppBar(
-            title: Text('Flutter-WebRTC example'),
-          ),
+          // appBar: AppBar(
+          //   title: Text('Flutter-WebRTC example'),
+          // ),
           body: ListView.builder(
               shrinkWrap: true,
               padding: const EdgeInsets.all(0.0),
@@ -62,7 +62,8 @@ class _P2PAppState extends State<P2PApp> {
   _initData() async {
     _prefs = await SharedPreferences.getInstance();
     setState(() {
-      _server = _prefs.getString('server') ?? 'https://0.0.0.0:8086';
+      //_server = _prefs.getString('server') ?? 'https://141.8.199.89:8086';
+      _server = 'https://141.8.199.89:8086';
     });
   }
 

@@ -39,3 +39,24 @@ TextStyle green15_500 = TextStyle(fontSize: 15.0, fontWeight: FontWeight.w500 , 
 TextStyle backGroundColorButtonOrange15_500 = TextStyle(fontSize: 15.0, fontWeight: FontWeight.w500 , color: backGroundColorButtonOrange, fontFamily: 'Inter', height: 1.5);
 TextStyle white18 = const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w700 , color: Color(0xFFFFFFFF), fontFamily: 'Inter',);
 TextStyle white22 = const TextStyle(fontSize: 22.0, fontWeight: FontWeight.w700 , color: Color(0xFFFFFFFF), fontFamily: 'Inter',);
+
+
+///массив подсказок для экрана с картой
+List promts_map = [
+  "В режиме портрет можно выключить отображения графика высот",
+  "Запустите режим записи трека кнопкой с зеленым кругом",
+  "Переключайтесь между режимами отображения Карта и  Таблица",
+  "Долгим нажатием на карту установите цель"
+];
+///массив подсказок для экрана с таблицей
+List promts_table = [
+  'Назмите и удерживайте плитку для перемещения',
+  "Проведите по плитке в лево или вправо для изменения ширины",
+  "Проведите по плитке вверх или в низ для изменения высоты",
+  "Настройки плиток можно сохранять",
+  "Долгое нажате по селектору сохраненного значения удалит его",
+  "Размещение и размер плиток можно сбросить",
+  "Делайте отсечки круга в режиме записи трека нажатием по иконке часов",
+  "Нажмите на крестик, что бы удалить плитку",
+  "Пока не активирована запись трека плитки с данными можно настраивать по размеру"
+];

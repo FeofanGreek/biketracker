@@ -15,7 +15,8 @@ class GraphicsView extends StatelessWidget {
         Expanded(
           child: MapFlutter(),
         ),
-        const LineChartWidget()
+        ///график отображать в портретной ориентации
+        if(MyHomePageState.instance.showCart) LineChartWidget()
       ],
     ) : Row(
       children: [

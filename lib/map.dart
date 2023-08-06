@@ -1,5 +1,8 @@
 
 import 'dart:async';
+import 'dart:math';
+import 'package:biketracker/utils.dart';
+import 'package:biketracker/variables.dart';
 import 'package:biketracker/widgets/compas.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -53,6 +56,7 @@ class MapFlutterState extends State<MapFlutter> {
     instance = this;
     _initStyle();
     super.initState();
+
   }
 
 
@@ -75,6 +79,10 @@ class MapFlutterState extends State<MapFlutter> {
         : FlutterMap(
         mapController: trackModel.controllerMap,
         options: MapOptions(
+          onLongPress: (position, coords){
+            trackModel.targetCoords = coords;
+            MyHomePageState.instance.setter();
+          },
             center: trackModel.currenLocation,
             zoom: 18,
             maxZoom: 22,
@@ -117,6 +125,19 @@ class MapFlutterState extends State<MapFlutter> {
                     builder: (BuildContext context) => Transform.rotate(
                       angle: trackModel.azimuth * pi / 180,
                       child:const Icon(CupertinoIcons.location_north_fill, color: Colors.orange,)
+                    )
+
+                ),
+                Marker(
+                    point: trackModel.targetCoords,
+                    builder: (BuildContext context) => Transform.rotate(
+                        angle: trackModel.azimuth * pi / 180,
+                        child:GestureDetector(
+    onTap: (){
+      trackModel.targetCoords = LatLng(0.0, 0.0);
+    },
+                          child: const Icon(CupertinoIcons.star, color: Colors.yellow,),
+    )
                     )
 
                 )

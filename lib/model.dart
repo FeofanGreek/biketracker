@@ -55,6 +55,7 @@ class Track{
   bool recordInProgress = false;
   late StreamSubscription<Position> positionStream;
   LatLng currenLocation = LatLng(0.0,0.0);
+  LatLng targetCoords = LatLng(0.0,0.0);
   final MapController controllerMap = MapController();
 
   Track({
@@ -68,10 +69,12 @@ class Track{
     this.currentDistance,
     this.ploylinePositions,
     this.stopTime,
+    required this.circlesStory,
+    required this.heightStory
   });
 
 
-  factory Track.fromMap(Map<String, dynamic> _json) => Track();
+  factory Track.fromMap(Map<String, dynamic> _json) => Track(circlesStory: [], heightStory: []);
 
   ///stoping record track
   Future<bool>stopRecord()async{
@@ -201,6 +204,8 @@ class DBdriver{
           'trackDuration INTEGER, '
           'currentDistance REAL, '
           'ploylinePositions TEXT, '
+          'circles TEXT, '
+          'heights TEXT, '
           'startTime INTEGER, '
           'stopTime INTEGER, '
           'name TEXT)');
@@ -212,8 +217,8 @@ class DBdriver{
     int result = 0;
     Database database = await openDatabase(await getDBPath(), version: 1,);
     await database.transaction((DB) async {
-      result = await DB.rawInsert('INSERT INTO [Tracks] ([maxSpeed], [middleSpeed], [maxHeight], [trackDuration], [currentDistance], [ploylinePositions], [startTime], [stopTime], [name]) '
-          'VALUES(?,?,?,?,?,?,?,?,?)',
+      result = await DB.rawInsert('INSERT INTO [Tracks] ([maxSpeed], [middleSpeed], [maxHeight], [trackDuration], [currentDistance], [ploylinePositions], [circles], [heights], [startTime], [stopTime], [name]) '
+          'VALUES(?,?,?,?,?,?,?,?,?,?,?)',
           [
             track.maxSpeed,
             track.middleSpeed,
@@ -221,6 +226,8 @@ class DBdriver{
             track.trackDuration!.inSeconds,
             track.currentDistance,
             json.encode(track.ploylinePositions!.map((e) => {"lat" : e.latitude, "lng" : e.longitude}).toList()),
+            json.encode(track.circlesStory.map((e)=> e.inSeconds).toList()),
+            json.encode(track.heightStory.map((e) => e).toList()),
             track.startTime!.millisecondsSinceEpoch,
             DateTime.now().millisecondsSinceEpoch,
             track.name
@@ -246,6 +253,8 @@ class DBdriver{
             trackDuration : Duration(seconds: item['trackDuration']),
             currentDistance: item['currentDistance'],
             ploylinePositions: (json.decode(item['ploylinePositions']) as List).map((e) => LatLng(e['lat'], e['lng'])).toList().cast<LatLng>(),
+            heightStory: (json.decode(item['heights']) as List),
+            circlesStory: (json.decode(item['circles']) as List).map((e) => Duration(seconds: e)).toList().cast<Duration>(),
             stopTime: DateTime.fromMillisecondsSinceEpoch(item['stopTime']),
           ));
         }

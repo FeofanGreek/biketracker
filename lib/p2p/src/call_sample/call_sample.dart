@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_verification_code/flutter_verification_code.dart';
 import 'dart:core';
 import '../widgets/screen_select_dialog.dart';
 import 'signaling.dart';
@@ -91,12 +93,12 @@ class _CallSampleState extends State<CallSample> {
           break;
         case CallState.CallStateInvite:
           _waitAccept = true;
-          _showInvateDialog();
+          ///_showInvateDialog();
           break;
         case CallState.CallStateConnected:
           if (_waitAccept) {
             _waitAccept = false;
-            Navigator.of(context).pop(false);
+            ///Navigator.of(context).pop(false);
           }
           setState(() {
             _inCalling = true;
@@ -116,12 +118,12 @@ class _CallSampleState extends State<CallSample> {
 
     _signaling?.onLocalStream = ((stream) {
       _localRenderer.srcObject = stream;
-      setState(() {});
+      if(mounted)setState(() {});
     });
 
     _signaling?.onAddRemoteStream = ((_, stream) {
       _remoteRenderer.srcObject = stream;
-      setState(() {});
+      if(mounted)setState(() {});
     });
 
     _signaling?.onRemoveRemoteStream = ((_, stream) {
@@ -216,7 +218,7 @@ class _CallSampleState extends State<CallSample> {
       if (source != null) {
         try {
           var stream =
-              await navigator.mediaDevices.getDisplayMedia(<String, dynamic>{
+          await navigator.mediaDevices.getDisplayMedia(<String, dynamic>{
             'video': {
               'deviceId': {'exact': source.id},
               'mandatory': {'frameRate': 30.0}
@@ -233,7 +235,7 @@ class _CallSampleState extends State<CallSample> {
       }
     } else if (WebRTC.platformIsWeb) {
       screenStream =
-          await navigator.mediaDevices.getDisplayMedia(<String, dynamic>{
+      await navigator.mediaDevices.getDisplayMedia(<String, dynamic>{
         'audio': false,
         'video': true,
       });
@@ -247,117 +249,179 @@ class _CallSampleState extends State<CallSample> {
 
   _buildRow(context, peer) {
     var self = (peer['id'] == _selfId);
-    return ListBody(children: <Widget>[
-      ListTile(
-        title: Text(self
-            ? peer['name'] + ', ID: ${peer['id']} ' + ' [Your self]'
-            : peer['name'] + ', ID: ${peer['id']} '),
-        onTap: null,
-        trailing: SizedBox(
-            width: 100.0,
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  IconButton(
-                    icon: Icon(self ? Icons.close : Icons.videocam,
-                        color: self ? Colors.grey : Colors.black),
-                    onPressed: () => _invitePeer(context, peer['id'], false),
-                    tooltip: 'Video calling',
-                  ),
-                  IconButton(
-                    icon: Icon(self ? Icons.close : Icons.screen_share,
-                        color: self ? Colors.grey : Colors.black),
-                    onPressed: () => _invitePeer(context, peer['id'], true),
-                    tooltip: 'Screen sharing',
-                  )
-                ])),
-        subtitle: Text('[' + peer['user_agent'] + ']'),
-      ),
-      Divider()
-    ]);
+    return ListBody(
+        children: <Widget>[
+          if(!self)ListTile(
+            title: Text(
+                'ID: ${peer['id']} '
+              // self
+              // ? peer['name'] + ', ID: ${peer['id']} ' + ' [Your self]'
+              // : peer['name'] + ', ID: ${peer['id']} '
+            ),
+            onTap: null,
+            trailing: SizedBox(
+                width: 100.0,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      IconButton(
+                        icon: Icon(self ? Icons.close : Icons.videocam,
+                            color: self ? Colors.grey : Colors.black),
+                        ///приглашаем на видеозвонок
+                        onPressed: () => _invitePeer(context, peer['id'], false),
+                        tooltip: 'Video calling',
+                      ),
+                      // IconButton(
+                      //   icon: Icon(self ? Icons.close : Icons.screen_share,
+                      //       color: self ? Colors.grey : Colors.black),
+                      //   onPressed: () => _invitePeer(context, peer['id'], true),
+                      //   tooltip: 'Screen sharing',
+                      // )
+                    ])),
+            ///subtitle: Text('[' + peer['user_agent'] + ']'),
+          ),
+          if(!self)Divider()
+        ]);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('P2P Call Sample' +
-      //       (_selfId != null ? ' [Your ID ($_selfId)] ' : '')),
-      //   actions: <Widget>[
-      //     IconButton(
-      //       icon: const Icon(Icons.settings),
-      //       onPressed: null,
-      //       tooltip: 'setup',
-      //     ),
-      //   ],
-      // ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: _inCalling
-          ? SizedBox(
-              width: 240.0,
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    FloatingActionButton(
-                      child: const Icon(Icons.switch_camera),
-                      tooltip: 'Camera',
-                      onPressed: _switchCamera,
-                    ),
-                    FloatingActionButton(
-                      child: const Icon(Icons.desktop_mac),
-                      tooltip: 'Screen Sharing',
-                      onPressed: () => selectScreenSourceDialog(context),
-                    ),
-                    FloatingActionButton(
-                      onPressed: _hangUp,
-                      tooltip: 'Hangup',
-                      child: Icon(Icons.call_end),
-                      backgroundColor: Colors.pink,
-                    ),
-                    FloatingActionButton(
-                      child: const Icon(Icons.mic_off),
-                      tooltip: 'Mute Mic',
-                      onPressed: _muteMic,
-                    )
-                  ]))
-          : null,
-      body: _inCalling
-          ? OrientationBuilder(builder: (context, orientation) {
-              return Container(
-                child: Stack(children: <Widget>[
-                  Positioned(
-                      left: 0.0,
-                      right: 0.0,
-                      top: 0.0,
-                      bottom: 0.0,
-                      child: Container(
-                        margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height,
-                        child: RTCVideoView(_remoteRenderer),
-                        decoration: BoxDecoration(color: Colors.black54),
-                      )),
-                  Positioned(
-                    left: 20.0,
-                    top: 20.0,
-                    child: Container(
-                      width: orientation == Orientation.portrait ? 90.0 : 120.0,
-                      height:
-                          orientation == Orientation.portrait ? 120.0 : 90.0,
-                      child: RTCVideoView(_localRenderer, mirror: true),
-                      decoration: BoxDecoration(color: Colors.black54),
+        backgroundColor: Colors.blueGrey,
+      appBar: AppBar(
+        automaticallyImplyLeading: true,
+        backgroundColor: Colors.blueGrey,
+        leading: BackButton(
+            color: Colors.white
+        ),
+        // title: Text('P2P Call Sample' +
+        //     (_selfId != null ? ' [Your ID ($_selfId)] ' : '')),
+      ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: _inCalling
+        ///экран во время звонка
+            ? SizedBox(
+            width: 240.0,
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  FloatingActionButton(
+                    child: const Icon(Icons.switch_camera),
+                    tooltip: 'Camera',
+                    onPressed: _switchCamera,
+                  ),
+                  // FloatingActionButton(
+                  //   child: const Icon(Icons.desktop_mac),
+                  //   tooltip: 'Screen Sharing',
+                  //   onPressed: () => selectScreenSourceDialog(context),
+                  // ),
+                  FloatingActionButton(
+                    onPressed: _hangUp,
+                    tooltip: 'Hangup',
+                    child: Icon(Icons.call_end),
+                    backgroundColor: Colors.pink,
+                  ),
+                  FloatingActionButton(
+                    child: const Icon(Icons.mic_off),
+                    tooltip: 'Mute Mic',
+                    onPressed: _muteMic,
+                  )
+                ]))
+            : SizedBox.shrink(),
+        body: _inCalling
+        ///экран во время звонка
+            ? OrientationBuilder(builder: (context, orientation) {
+          return Container(
+            child: Stack(children: <Widget>[
+              Positioned(
+                  left: 0.0,
+                  right: 0.0,
+                  top: 0.0,
+                  bottom: 0.0,
+                  child: Container(
+                    margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    decoration: const BoxDecoration(color: Colors.black54),
+                    child: RTCVideoView(_remoteRenderer),
+                  )),
+              Positioned(
+                left: 20.0,
+                top: 20.0,
+                child: Container(
+                  width: orientation == Orientation.portrait ? 90.0 : 120.0,
+                  height:
+                  orientation == Orientation.portrait ? 120.0 : 90.0,
+                  child: RTCVideoView(_localRenderer, mirror: true),
+                  decoration: BoxDecoration(color: Colors.black54),
+                ),
+              ),
+            ]),
+          );
+        })
+        ///список контактов
+        //     : ListView.builder(
+        //         shrinkWrap: true,
+        //         padding: const EdgeInsets.all(0.0),
+        //         itemCount: (_peers != null ? _peers.length : 0),
+        //         itemBuilder: (context, i) {
+        //           return _buildRow(context, _peers[i]);
+        //         }),
+            : Container(
+            color: Colors.blueGrey,
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text('Введите код указанный ниже на телефоне с которым будет видеосвязь', style: const TextStyle(fontSize: 16, color:Colors.white), textAlign: TextAlign.center,),
+                ),
+                if(_peers.length > 0)Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text('${
+                      _peers.where((e) => e['id'] == _selfId).first['id']
+                  }', style: const TextStyle(fontSize: 36, color:Colors.white), textAlign: TextAlign.center,),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text('Введите у себя код из телефона с которым будет видеосвязь', style: const TextStyle(fontSize: 16, color:Colors.white), textAlign: TextAlign.center,),
+                ),
+                VerificationCode(
+                  textStyle: TextStyle(fontSize: 20.0, color: Colors.red[900]),
+                  keyboardType: TextInputType.number,
+                  underlineColor: Colors.amber, // If this is null it will use primaryColor: Colors.red from Theme
+                  length: 6,
+                  cursorColor: Colors.blue, // If this is null it will default to the ambient
+                  // clearAll is NOT required, you can delete it
+                  // takes any widget, so you can implement your design
+                  clearAll: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Очистить',
+                      style: TextStyle(fontSize: 14.0, color: Colors.white),
                     ),
                   ),
-                ]),
-              );
-            })
-          : ListView.builder(
-              shrinkWrap: true,
-              padding: const EdgeInsets.all(0.0),
-              itemCount: (_peers != null ? _peers.length : 0),
-              itemBuilder: (context, i) {
-                return _buildRow(context, _peers[i]);
-              }),
+                  onCompleted: (String value) {
+                    // setState(() {
+                    //   _code = value;
+                    // });
+                    _invitePeer(context, value, false);
+                  },
+                  onEditing: (bool value) {
+                    setState(() {
+                      _onEditing = value;
+                    });
+                    if (!_onEditing) FocusScope.of(context).unfocus();
+                  },
+                )
+              ],
+            )
+        )
     );
   }
+
+  bool _onEditing = false;
+  String _code = '';
 }
