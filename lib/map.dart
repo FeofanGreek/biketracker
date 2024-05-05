@@ -27,10 +27,10 @@ class MapFlutterState extends State<MapFlutter> {
   Style? _style;
 
   Future<Style> _readStyle() =>
-      StyleReader(
-        uri: 'mapbox://styles/koldashev/cliwrnlc7015o01pf71kohae2?access_token={key}',
+      StyleReader(///https://api.mapbox.com/styles/v1/putikoff/clvauocc800um01pka3d3bsss.html?title=view&access_token=pk.eyJ1IjoicHV0aWtvZmYiLCJhIjoiY2x1cnp0cXdjMGNkYjJxbGdjaDJqaWVxcyJ9._iVV1vIjaVLrLTWXqnfwkw&zoomwheel=true&fresh=true#15.8/59.959122/30.316377
+        uri: 'mapbox://styles/putikoff/clvauocc800um01pka3d3bsss?access_token={key}',
         // ignore: undefined_identifier
-        apiKey: 'pk.eyJ1Ijoia29sZGFzaGV2IiwiYSI6ImNrNDJ5ZTExdDAyMzYzb294NG1zdmlvazEifQ.ph863CVICRWFF1VXL0i57w',
+        apiKey: 'pk.eyJ1IjoicHV0aWtvZmYiLCJhIjoiY2x1cnp0cXdjMGNkYjJxbGdjaDJqaWVxcyJ9._iVV1vIjaVLrLTWXqnfwkw',
         //logger: Logger.console()
       )
           .read();
