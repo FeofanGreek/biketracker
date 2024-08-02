@@ -31,7 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
   permission_handler: ^10.2.0
-  intl: ^0.18.0
+  intl: ^0.19.0
   http: ^0.13.3
   path_provider: ^2.0.11
   flutter_localization: ^0.1.11
@@ -48,7 +48,7 @@ dependencies:
   sqflite_common_ffi: ^2.2.5
   vector_map_tiles: ^4.0.0
   geolocator: ^9.0.2
-  syncfusion_flutter_gauges: ^22.1.39
+  syncfusion_flutter_gauges: ^26.2.7
   shared_preferences: ^2.2.0
   win32: ^5.0.0
   wakelock_plus: ^1.1.1
