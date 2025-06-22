@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_verification_code/flutter_verification_code.dart';
 import 'dart:core';
@@ -9,25 +8,25 @@ import 'package:flutter_webrtc/flutter_webrtc.dart';
 class CallSample extends StatefulWidget {
   static String tag = 'call_sample';
   final String host;
-  CallSample({required this.host});
+  const CallSample({super.key, required this.host});
 
   @override
-  _CallSampleState createState() => _CallSampleState();
+  CallSampleState createState() => CallSampleState();
 }
 
-class _CallSampleState extends State<CallSample> {
+class CallSampleState extends State<CallSample> {
   Signaling? _signaling;
   List<dynamic> _peers = [];
   String? _selfId;
-  RTCVideoRenderer _localRenderer = RTCVideoRenderer();
-  RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
+  final RTCVideoRenderer _localRenderer = RTCVideoRenderer();
+  final RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
   bool _inCalling = false;
   Session? _session;
   DesktopCapturerSource? selected_source_;
   bool _waitAccept = false;
 
   // ignore: unused_element
-  _CallSampleState();
+  CallSampleState();
 
   @override
   initState() {
@@ -80,7 +79,7 @@ class _CallSampleState extends State<CallSample> {
           break;
         case CallState.CallStateBye:
           if (_waitAccept) {
-            print('peer reject');
+            debugPrint('peer reject');
             _waitAccept = false;
             Navigator.of(context).pop(false);
           }
@@ -136,18 +135,18 @@ class _CallSampleState extends State<CallSample> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("title"),
-          content: Text("accept?"),
+          title: const Text("title"),
+          content: const Text("accept?"),
           actions: <Widget>[
             MaterialButton(
-              child: Text(
+              child: const Text(
                 'Reject',
                 style: TextStyle(color: Colors.red),
               ),
               onPressed: () => Navigator.of(context).pop(false),
             ),
             MaterialButton(
-              child: Text(
+              child: const Text(
                 'Accept',
                 style: TextStyle(color: Colors.green),
               ),
@@ -164,11 +163,11 @@ class _CallSampleState extends State<CallSample> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("title"),
-          content: Text("waiting"),
+          title: const Text("title"),
+          content: const Text("waiting"),
           actions: <Widget>[
             TextButton(
-              child: Text("cancel"),
+              child: const Text("cancel"),
               onPressed: () {
                 Navigator.of(context).pop(false);
                 _hangUp();
@@ -225,12 +224,12 @@ class _CallSampleState extends State<CallSample> {
             }
           });
           stream.getVideoTracks()[0].onEnded = () {
-            print(
+            debugPrint(
                 'By adding a listener on onEnded you can: 1) catch stop video sharing on Web');
           };
           screenStream = stream;
         } catch (e) {
-          print(e);
+          debugPrint(e.toString());
         }
       }
     } else if (WebRTC.platformIsWeb) {
@@ -280,7 +279,7 @@ class _CallSampleState extends State<CallSample> {
                     ])),
             ///subtitle: Text('[' + peer['user_agent'] + ']'),
           ),
-          if(!self)Divider()
+          if(!self)const Divider()
         ]);
   }
 
@@ -291,7 +290,7 @@ class _CallSampleState extends State<CallSample> {
       appBar: AppBar(
         automaticallyImplyLeading: true,
         backgroundColor: Colors.blueGrey,
-        leading: BackButton(
+        leading: const BackButton(
             color: Colors.white
         ),
         // title: Text('P2P Call Sample' +
@@ -306,9 +305,9 @@ class _CallSampleState extends State<CallSample> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   FloatingActionButton(
-                    child: const Icon(Icons.switch_camera),
                     tooltip: 'Camera',
                     onPressed: _switchCamera,
+                    child: const Icon(Icons.switch_camera),
                   ),
                   // FloatingActionButton(
                   //   child: const Icon(Icons.desktop_mac),
@@ -318,46 +317,44 @@ class _CallSampleState extends State<CallSample> {
                   FloatingActionButton(
                     onPressed: _hangUp,
                     tooltip: 'Hangup',
-                    child: Icon(Icons.call_end),
                     backgroundColor: Colors.pink,
+                    child: const Icon(Icons.call_end),
                   ),
                   FloatingActionButton(
-                    child: const Icon(Icons.mic_off),
                     tooltip: 'Mute Mic',
                     onPressed: _muteMic,
+                    child: const Icon(Icons.mic_off),
                   )
                 ]))
-            : SizedBox.shrink(),
+            : const SizedBox.shrink(),
         body: _inCalling
         ///экран во время звонка
             ? OrientationBuilder(builder: (context, orientation) {
-          return Container(
-            child: Stack(children: <Widget>[
-              Positioned(
-                  left: 0.0,
-                  right: 0.0,
-                  top: 0.0,
-                  bottom: 0.0,
-                  child: Container(
-                    margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
-                    decoration: const BoxDecoration(color: Colors.black54),
-                    child: RTCVideoView(_remoteRenderer),
-                  )),
-              Positioned(
-                left: 20.0,
-                top: 20.0,
+          return Stack(children: <Widget>[
+            Positioned(
+                left: 0.0,
+                right: 0.0,
+                top: 0.0,
+                bottom: 0.0,
                 child: Container(
-                  width: orientation == Orientation.portrait ? 90.0 : 120.0,
-                  height:
-                  orientation == Orientation.portrait ? 120.0 : 90.0,
-                  child: RTCVideoView(_localRenderer, mirror: true),
-                  decoration: BoxDecoration(color: Colors.black54),
-                ),
+                  margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  decoration: const BoxDecoration(color: Colors.black54),
+                  child: RTCVideoView(_remoteRenderer),
+                )),
+            Positioned(
+              left: 20.0,
+              top: 20.0,
+              child: Container(
+                width: orientation == Orientation.portrait ? 90.0 : 120.0,
+                height:
+                orientation == Orientation.portrait ? 120.0 : 90.0,
+                decoration: const BoxDecoration(color: Colors.black54),
+                child: RTCVideoView(_localRenderer, mirror: true),
               ),
-            ]),
-          );
+            ),
+          ]);
         })
         ///список контактов
         //     : ListView.builder(
@@ -374,19 +371,19 @@ class _CallSampleState extends State<CallSample> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text('Введите код указанный ниже на телефоне с которым будет видеосвязь', style: const TextStyle(fontSize: 16, color:Colors.white), textAlign: TextAlign.center,),
+                const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text('Введите код указанный ниже на телефоне с которым будет видеосвязь', style: TextStyle(fontSize: 16, color:Colors.white), textAlign: TextAlign.center,),
                 ),
-                if(_peers.length > 0)Padding(
+                if(_peers.isNotEmpty)Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Text('${
                       _peers.where((e) => e['id'] == _selfId).first['id']
                   }', style: const TextStyle(fontSize: 36, color:Colors.white), textAlign: TextAlign.center,),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text('Введите у себя код из телефона с которым будет видеосвязь', style: const TextStyle(fontSize: 16, color:Colors.white), textAlign: TextAlign.center,),
+                const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text('Введите у себя код из телефона с которым будет видеосвязь', style: TextStyle(fontSize: 16, color:Colors.white), textAlign: TextAlign.center,),
                 ),
                 VerificationCode(
                   textStyle: TextStyle(fontSize: 20.0, color: Colors.red[900]),
@@ -396,8 +393,8 @@ class _CallSampleState extends State<CallSample> {
                   cursorColor: Colors.blue, // If this is null it will default to the ambient
                   // clearAll is NOT required, you can delete it
                   // takes any widget, so you can implement your design
-                  clearAll: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  clearAll: const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: Text(
                       'Очистить',
                       style: TextStyle(fontSize: 14.0, color: Colors.white),
@@ -423,5 +420,5 @@ class _CallSampleState extends State<CallSample> {
   }
 
   bool _onEditing = false;
-  String _code = '';
+  //String _code = '';
 }

@@ -1,6 +1,8 @@
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html';
 
+import 'package:flutter/cupertino.dart';
+
 class SimpleWebSocket {
   String _url;
   var _socket;
@@ -34,9 +36,9 @@ class SimpleWebSocket {
   send(data) {
     if (_socket != null && _socket.readyState == WebSocket.OPEN) {
       _socket.send(data);
-      print('send: $data');
+      debugPrint('send: $data');
     } else {
-      print('WebSocket not connected, message $data not sent');
+      debugPrint('WebSocket not connected, message $data not sent');
     }
   }
 

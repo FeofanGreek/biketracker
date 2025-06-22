@@ -3,6 +3,8 @@ import 'dart:math';
 import 'dart:convert';
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
+
 class SimpleWebSocket {
   String _url;
   var _socket;
@@ -29,7 +31,7 @@ class SimpleWebSocket {
   send(data) {
     if (_socket != null) {
       _socket.add(data);
-      print('send: $data');
+      debugPrint('send: $data');
     }
   }
 
@@ -44,7 +46,7 @@ class SimpleWebSocket {
       HttpClient client = HttpClient(context: SecurityContext());
       client.badCertificateCallback =
           (X509Certificate cert, String host, int port) {
-        print(
+            debugPrint(
             'SimpleWebSocket: Allow self-signed certificate => $host:$port. ');
         return true;
       };

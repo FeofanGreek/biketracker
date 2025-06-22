@@ -52,7 +52,7 @@ class _ThumbnailWidgetState extends State<ThumbnailWidget> {
               : null,
           child: InkWell(
             onTap: () {
-              print('Selected source id => ${widget.source.id}');
+              debugPrint('Selected source id => ${widget.source.id}');
               widget.onTap(widget.source);
             },
             child: widget.source.thumbnail != null
@@ -125,7 +125,7 @@ class ScreenSelectDialog extends Dialog {
     try {
       var sources = await desktopCapturer.getSources(types: [_sourceType]);
       sources.forEach((element) {
-        print(
+        debugPrint(
             'name: ${element.name}, id: ${element.id}, type: ${element.type}');
       });
       _timer?.cancel();
@@ -139,7 +139,7 @@ class ScreenSelectDialog extends Dialog {
       _stateSetter?.call(() {});
       return;
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
     }
   }
 

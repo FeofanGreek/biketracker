@@ -264,7 +264,7 @@ class Signaling {
       case 'bye':
         {
           var sessionId = data['session_id'];
-          print('bye: ' + sessionId);
+          debugPrint('bye: ' + sessionId);
           var session = _sessions.remove(sessionId);
           if (session != null) {
             onCallStateChange?.call(session, CallState.CallStateBye);
@@ -274,7 +274,7 @@ class Signaling {
         break;
       case 'keepalive':
         {
-          print('keepalive response!');
+          debugPrint('keepalive response!');
         }
         break;
       default:
@@ -286,7 +286,7 @@ class Signaling {
     var url = 'https://$_host:$_port/ws';
     _socket = SimpleWebSocket(url);
 
-    print('connect to $url');
+    debugPrint('connect to $url');
 
     if (_turnCredential == null) {
       try {
@@ -311,7 +311,7 @@ class Signaling {
     }
 
     _socket?.onOpen = () {
-      print('onOpen');
+      debugPrint('onOpen');
       onSignalingStateChange?.call(SignalingState.ConnectionOpen);
       _send('new', {
         'name': DeviceInfo.label,
@@ -321,12 +321,12 @@ class Signaling {
     };
 
     _socket?.onMessage = (message) {
-      print('Received data: ' + message);
+      debugPrint('Received data: ' + message);
       onMessage(_decoder.convert(message));
     };
 
     _socket?.onClose = (int? code, String? reason) {
-      print('Closed by server [$code => $reason]!');
+      debugPrint('Closed by server [$code => $reason]!');
       onSignalingStateChange?.call(SignalingState.ConnectionClosed);
     };
 
@@ -384,10 +384,11 @@ class Signaling {
     required bool screenSharing,
   }) async {
     var newSession = session ?? Session(sid: sessionId, pid: peerId);
-    if (media != 'data')
+    if (media != 'data') {
       _localStream =
           await createStream(media, screenSharing, context: _context);
-    print(_iceServers);
+    }
+    debugPrint(_iceServers.toString());
     RTCPeerConnection pc = await createPeerConnection({
       ..._iceServers,
       ...{'sdpSemantics': sdpSemantics}
@@ -459,13 +460,6 @@ class Signaling {
       */
     }
     pc.onIceCandidate = (candidate) async {
-      if (candidate == null) {
-        print('onIceCandidate: complete!');
-        return;
-      }
-      // This delay is needed to allow enough time to try an ICE candidate
-      // before skipping to the next one. 1 second is just an heuristic value
-      // and should be thoroughly tested in your own environment.
       await Future.delayed(
           const Duration(seconds: 1),
           () => _send('candidate', {
@@ -528,7 +522,7 @@ class Signaling {
         'media': media,
       });
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
     }
   }
 
@@ -551,7 +545,7 @@ class Signaling {
         'session_id': session.sid,
       });
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
     }
   }
 

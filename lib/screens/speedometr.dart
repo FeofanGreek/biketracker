@@ -33,69 +33,68 @@ class Speedometr extends StatelessWidget {
                     ],
                     annotations: <GaugeAnnotation>[
                       GaugeAnnotation(
-                          widget: Container(
-                              child: Column(
+                          widget: Column(
+                              children: [
+                                Text('${trackModel.speed < 0 ? 0 : trackModel.speed.round()} км/ч',style: TextStyle(fontSize: 35,fontWeight: FontWeight.bold, color: Colors.lightGreenAccent)),
+                                const SizedBox(height: 30,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('${trackModel.speed < 0 ? 0 : trackModel.speed.round()} км/ч',style: TextStyle(fontSize: 35,fontWeight: FontWeight.bold, color: Colors.lightGreenAccent)),
-                                    const SizedBox(height: 30,),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            const Text('Макс. скорость',style: TextStyle(fontSize: 10, color:Colors.white)),
-                                            Text('${trackModel.maxSpeed!.roundToDouble()} км/ч',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold, height: 1, color: Colors.lightGreenAccent)),
-                                          ],
-                                        ),
-                                        const SizedBox(width: 80,),
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            const Text('Макс. высота',style: TextStyle(fontSize: 10, color:Colors.white)),
-                                            Text('${trackModel.maxHeight!.round()} м',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold, height: 1, color: Colors.lightGreenAccent)),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                    const SizedBox(height: 10,),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        const SizedBox(width: 15,),
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            const Text('Средн. скорость',style: TextStyle(fontSize: 10, color:Colors.white)),
-                                            Text('${trackModel.middleSpeed!.roundToDouble()} км/ч',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold, height: 1, color: Colors.lightGreenAccent)),
-                                          ],
-                                        ),
-                                        const SizedBox(width: 75,),
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            const Text('Текущая. высота',style: TextStyle(fontSize: 10, color:Colors.white)),
-                                            Text('${trackModel.currentHeigth.round()} м',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold, height: 1, color: Colors.lightGreenAccent)),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                    const Spacer(),
                                     Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        const Text('Пробег трека',style: TextStyle(fontSize: 10, color:Colors.white)),
-                                        Text('${(trackModel.currentDistance! / 1000).toStringAsFixed(2)} км',style: const TextStyle(fontSize: 25,fontWeight: FontWeight.bold, height: 1, color: Colors.lightGreenAccent)),
+                                        const Text('Макс. скорость',style: TextStyle(fontSize: 10, color:Colors.white)),
+                                        Text('${trackModel.maxSpeed!.roundToDouble()} км/ч',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold, height: 1, color: Colors.lightGreenAccent)),
                                       ],
                                     ),
+                                    const SizedBox(width: 80,),
                                     Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        const Text('Общий пробег',style: TextStyle(fontSize: 10, color:Colors.white)),
-                                        Text('${(trackModel.cumulativeDistance / 1000 ).round()} км',style: const TextStyle(fontSize: 25,fontWeight: FontWeight.bold, height: 1, color: Colors.lightGreenAccent)),
+                                        const Text('Макс. высота',style: TextStyle(fontSize: 10, color:Colors.white)),
+                                        Text('${trackModel.maxHeight!.round()} м',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold, height: 1, color: Colors.lightGreenAccent)),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                const SizedBox(height: 10,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const SizedBox(width: 15,),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        const Text('Средн. скорость',style: TextStyle(fontSize: 10, color:Colors.white)),
+                                        Text('${trackModel.middleSpeed!.roundToDouble()} км/ч',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold, height: 1, color: Colors.lightGreenAccent)),
                                       ],
                                     ),
-                                    SizedBox(height: !MyHomePageState.instance.portrait ? MediaQuery.of(context).size.height /3.5 : MediaQuery.of(context).size.width /3.5,),
-                                  ])
-                          ),
+                                    const SizedBox(width: 75,),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        const Text('Текущая. высота',style: TextStyle(fontSize: 10, color:Colors.white)),
+                                        Text('${trackModel.currentHeigth.round()} м',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold, height: 1, color: Colors.lightGreenAccent)),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                const Spacer(),
+                                Column(
+                                  children: [
+                                    const Text('Пробег трека',style: TextStyle(fontSize: 10, color:Colors.white)),
+                                    Text('${(trackModel.currentDistance! / 1000).toStringAsFixed(2)} км',style: const TextStyle(fontSize: 25,fontWeight: FontWeight.bold, height: 1, color: Colors.lightGreenAccent)),
+
+                                    const Text('Общий пробег',style: TextStyle(fontSize: 10, color:Colors.white)),
+                                    Text('${(trackModel.cumulativeDistance / 1000 ).round()} км',style: const TextStyle(fontSize: 25,fontWeight: FontWeight.bold, height: 1, color: Colors.lightGreenAccent)),
+
+                                    const Text('Сожжено каллорий',style: TextStyle(fontSize: 10, color:Colors.white)),
+                                    Text('${trackModel.caloriesBurned.toStringAsFixed(0)} ккал',style: const TextStyle(fontSize: 25,fontWeight: FontWeight.bold, height: 1, color: Colors.lightGreenAccent)),
+
+                                  ],
+                                ),
+                                SizedBox(height: !MyHomePageState.instance.portrait ? MediaQuery.of(context).size.height /3.5 : MediaQuery.of(context).size.width /3.5,),
+                              ]),
                           angle: 90, positionFactor: 0.5
                       )]
                 )]),

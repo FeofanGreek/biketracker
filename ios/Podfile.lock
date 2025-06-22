@@ -2,16 +2,14 @@ PODS:
   - Flutter (1.0.0)
   - flutter_localization (0.0.1):
     - Flutter
-  - flutter_native_splash (0.0.1):
+  - flutter_native_splash (2.4.3):
     - Flutter
-  - flutter_webrtc (0.9.36):
+  - flutter_webrtc (0.14.0):
     - Flutter
-    - WebRTC-SDK (= 114.5735.02)
-  - FMDB (2.7.5):
-    - FMDB/standard (= 2.7.5)
-  - FMDB/standard (2.7.5)
+    - WebRTC-SDK (= 125.6422.07)
   - geolocator_apple (1.2.0):
     - Flutter
+    - FlutterMacOS
   - motion_sensors (0.0.1):
     - Flutter
   - package_info_plus (0.4.5):
@@ -19,54 +17,60 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - permission_handler_apple (9.1.1):
+  - permission_handler_apple (9.3.0):
     - Flutter
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - sqflite (0.0.3):
+  - sqflite_darwin (0.0.4):
     - Flutter
-    - FMDB (>= 2.7.5)
-  - sqlite3 (3.41.2):
-    - sqlite3/common (= 3.41.2)
-  - sqlite3/common (3.41.2)
-  - sqlite3/fts5 (3.41.2):
+    - FlutterMacOS
+  - sqlite3 (3.50.1):
+    - sqlite3/common (= 3.50.1)
+  - sqlite3/common (3.50.1)
+  - sqlite3/dbstatvtab (3.50.1):
     - sqlite3/common
-  - sqlite3/perf-threadsafe (3.41.2):
+  - sqlite3/fts5 (3.50.1):
     - sqlite3/common
-  - sqlite3/rtree (3.41.2):
+  - sqlite3/math (3.50.1):
+    - sqlite3/common
+  - sqlite3/perf-threadsafe (3.50.1):
+    - sqlite3/common
+  - sqlite3/rtree (3.50.1):
     - sqlite3/common
   - sqlite3_flutter_libs (0.0.1):
     - Flutter
-    - sqlite3 (~> 3.41.2)
+    - FlutterMacOS
+    - sqlite3 (~> 3.50.1)
+    - sqlite3/dbstatvtab
     - sqlite3/fts5
+    - sqlite3/math
     - sqlite3/perf-threadsafe
     - sqlite3/rtree
   - url_launcher_ios (0.0.1):
     - Flutter
   - wakelock_plus (0.0.1):
     - Flutter
-  - WebRTC-SDK (114.5735.02)
+  - WebRTC-SDK (125.6422.07)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_localization (from `.symlinks/plugins/flutter_localization/ios`)
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - flutter_webrtc (from `.symlinks/plugins/flutter_webrtc/ios`)
-  - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
+  - geolocator_apple (from `.symlinks/plugins/geolocator_apple/darwin`)
   - motion_sensors (from `.symlinks/plugins/motion_sensors/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
-  - sqflite (from `.symlinks/plugins/sqflite/ios`)
-  - sqlite3_flutter_libs (from `.symlinks/plugins/sqlite3_flutter_libs/ios`)
+  - sqflite_darwin (from `.symlinks/plugins/sqflite_darwin/darwin`)
+  - sqlite3_flutter_libs (from `.symlinks/plugins/sqlite3_flutter_libs/darwin`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - wakelock_plus (from `.symlinks/plugins/wakelock_plus/ios`)
 
 SPEC REPOS:
   trunk:
-    - FMDB
     - sqlite3
     - WebRTC-SDK
 
@@ -80,7 +84,7 @@ EXTERNAL SOURCES:
   flutter_webrtc:
     :path: ".symlinks/plugins/flutter_webrtc/ios"
   geolocator_apple:
-    :path: ".symlinks/plugins/geolocator_apple/ios"
+    :path: ".symlinks/plugins/geolocator_apple/darwin"
   motion_sensors:
     :path: ".symlinks/plugins/motion_sensors/ios"
   package_info_plus:
@@ -91,10 +95,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
   shared_preferences_foundation:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
-  sqflite:
-    :path: ".symlinks/plugins/sqflite/ios"
+  sqflite_darwin:
+    :path: ".symlinks/plugins/sqflite_darwin/darwin"
   sqlite3_flutter_libs:
-    :path: ".symlinks/plugins/sqlite3_flutter_libs/ios"
+    :path: ".symlinks/plugins/sqlite3_flutter_libs/darwin"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
   wakelock_plus:
@@ -102,23 +106,22 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_localization: f43b18844a2b3d2c71fd64f04ffd6b1e64dd54d4
-  flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
-  flutter_webrtc: 1944895d4e908c4bc722929dc4b9f8620d8e1b2f
-  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  geolocator_apple: cc556e6844d508c95df1e87e3ea6fa4e58c50401
-  motion_sensors: 03f55b7c637a7e365a0b5f9697a449f9059d5d91
-  package_info_plus: fd030dabf36271f146f1f3beacd48f564b0f17f7
-  path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
-  permission_handler_apple: e76247795d700c14ea09e3a2d8855d41ee80a2e6
-  shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
-  sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
-  sqlite3: fd89671d969f3e73efe503ce203e28b016b58f68
-  sqlite3_flutter_libs: 04ba0d14a04335a2fbf9a331e8664f401fbccdd5
-  url_launcher_ios: 08a3dfac5fb39e8759aeb0abbd5d9480f30fc8b4
-  wakelock_plus: 8b09852c8876491e4b6d179e17dfe2a0b5f60d47
-  WebRTC-SDK: dd913fd31cfbf1d43b9a22d83f4c6354c960c623
+  flutter_localization: 72299fb6cb4e51cae587bd953ed0b958040b71e6
+  flutter_native_splash: c32d145d68aeda5502d5f543ee38c192065986cf
+  flutter_webrtc: fd0d3bdef8766a0736dbbe2e5b7e85f1f3c52117
+  geolocator_apple: ab36aa0e8b7d7a2d7639b3b4e48308394e8cef5e
+  motion_sensors: 741e702c17467b9569a92165dda8d4d88c6167f1
+  package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
+  path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
+  permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
+  shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
+  sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0
+  sqlite3: 1d85290c3321153511f6e900ede7a1608718bbd5
+  sqlite3_flutter_libs: e7fc8c9ea2200ff3271f08f127842131746b70e2
+  url_launcher_ios: 694010445543906933d732453a59da0a173ae33d
+  wakelock_plus: e29112ab3ef0b318e58cfa5c32326458be66b556
+  WebRTC-SDK: dff00a3892bc570b6014e046297782084071657e
 
-PODFILE CHECKSUM: fd2e166af41a35560f46027f025f420501e217df
+PODFILE CHECKSUM: 6556aca9810b65cbdd41cc66171a93bbbb3cccda
 
-COCOAPODS: 1.15.0
+COCOAPODS: 1.16.2

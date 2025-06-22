@@ -1,8 +1,5 @@
 
 import 'dart:async';
-import 'dart:math';
-import 'package:biketracker/utils.dart';
-import 'package:biketracker/variables.dart';
 import 'package:biketracker/widgets/compas.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +13,8 @@ import 'main.dart';
 
 
 class MapFlutter extends StatefulWidget {
+  const MapFlutter({super.key});
+
 
   @override
   MapFlutterState createState() => MapFlutterState();
@@ -40,9 +39,9 @@ class MapFlutterState extends State<MapFlutter> {
       _style = await _readStyle();
     } catch (e, stack) {
       // ignore: avoid_print
-      print(e);
+      debugPrint(e.toString());
       // ignore: avoid_print
-      print(stack);
+      debugPrint(stack.toString());
       //_error = e;
     }
     if(mounted)setState(() {});
@@ -75,7 +74,7 @@ class MapFlutterState extends State<MapFlutter> {
 
   @override
   Widget build(BuildContext context) {
-    return _style == null ? SizedBox.shrink()
+    return _style == null ? const SizedBox.shrink()
         : FlutterMap(
         mapController: trackModel.controllerMap,
         options: MapOptions(
@@ -83,23 +82,25 @@ class MapFlutterState extends State<MapFlutter> {
             trackModel.targetCoords = coords;
             MyHomePageState.instance.setter();
           },
-            center: trackModel.currenLocation,
-            zoom: 18,
+            initialCenter: trackModel.currenLocation,
+            initialZoom: 18,
             maxZoom: 22,
-            interactiveFlags: InteractiveFlag.drag |
+          interactionOptions: const InteractionOptions(
+            flags: InteractiveFlag.drag |
             InteractiveFlag.flingAnimation |
             InteractiveFlag.pinchMove |
             InteractiveFlag.pinchZoom |
             InteractiveFlag.doubleTapZoom,
+          ),
 
         ),
-        nonRotatedChildren: [
-              Positioned(
-              top:10,
-              right: 10,
-                  child:CompassWidget()
-              ),
-            ],
+        // nonRotatedChildren: [
+        //       Positioned(
+        //       top:10,
+        //       right: 10,
+        //           child:CompassWidget()
+        //       ),
+        //     ],
         children: [
           VectorTileLayer(
               tileProviders: _style!.providers,
@@ -109,10 +110,10 @@ class MapFlutterState extends State<MapFlutter> {
               tileOffset: TileOffset.mapbox,
               layerMode: VectorTileLayerMode.vector),
 
-          PolylineLayer(
+          if((trackModel.ploylinePositions??[]).isNotEmpty)PolylineLayer(
               polylines: [
                 Polyline(
-                    points: trackModel.ploylinePositions!,
+                    points: trackModel.ploylinePositions??[],
                     strokeWidth: 4,
                     color: Colors.lightGreenAccent
                 )
@@ -122,19 +123,19 @@ class MapFlutterState extends State<MapFlutter> {
               markers: [
                 Marker(
                     point: trackModel.currenLocation,
-                    builder: (BuildContext context) => Transform.rotate(
-                      angle: trackModel.azimuth * pi / 180,
-                      child:const Icon(CupertinoIcons.location_north_fill, color: Colors.orange,)
+                    child: Transform.rotate(
+                        angle: trackModel.azimuth * pi / 180,
+                        child:const Icon(CupertinoIcons.location_north_fill, color: Colors.orange,)
                     )
 
                 ),
                 Marker(
                     point: trackModel.targetCoords,
-                    builder: (BuildContext context) => Transform.rotate(
+                    child: Transform.rotate(
                         angle: trackModel.azimuth * pi / 180,
                         child:GestureDetector(
     onTap: (){
-      trackModel.targetCoords = LatLng(0.0, 0.0);
+      trackModel.targetCoords = const LatLng(0.0, 0.0);
     },
                           child: const Icon(CupertinoIcons.star, color: Colors.yellow,),
     )
@@ -142,6 +143,11 @@ class MapFlutterState extends State<MapFlutter> {
 
                 )
               ]
+          ),
+          Positioned(
+              top:10,
+              right: 10,
+              child:CompassWidget()
           ),
       ]
     );

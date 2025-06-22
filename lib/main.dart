@@ -42,7 +42,8 @@ Track trackModel = Track(
     circlesStory: [],
     heightStory: []
 );
-DBdriver db = DBdriver();
+
+DbDriver db = DbDriver();
 
 ViewTunes viewTunes = ViewTunes();
 
@@ -55,7 +56,7 @@ final router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (_, __) => MyApp(),
+      builder: (_, __) => const MyApp(),
       routes: [
         GoRoute(
           path: 'videocall',
@@ -63,7 +64,7 @@ final router = GoRouter(
         ),
         GoRoute(
           path: 'getsharedroute',
-          builder: (_, __) => MyApp(),
+          builder: (_, __) => const MyApp(),
         ),
       ],
     ),
@@ -111,10 +112,10 @@ void main() {
 
 ///for chat
 Future<bool> startForegroundService() async {
-  final androidConfig = FlutterBackgroundAndroidConfig(
+  const androidConfig = FlutterBackgroundAndroidConfig(
     notificationTitle: 'Title of the notification',
     notificationText: 'Text of the notification',
-    notificationImportance: AndroidNotificationImportance.Default,
+    notificationImportance: AndroidNotificationImportance.normal,
     notificationIcon: AndroidResource(
         name: 'background_icon',
         defType: 'drawable'), // Default is ic_launcher from folder mipmap
@@ -162,7 +163,7 @@ class MyHomePage extends StatefulWidget {
 
 class MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   static late MyHomePageState instance;
-  double ScreenWidth = 0.0;
+  double screenWidth = 0.0;
   bool showCart = true;
 
 setter(){
@@ -176,7 +177,7 @@ openVariables()async {
 bool portrait = true;
 
 showSnack() {
-  Timer(Duration(seconds: 1), () {
+  Timer(const Duration(seconds: 1), () {
     if (viewTunes.mapTable == 0) {
       Random random = Random();
       int randomNumber = random.nextInt(promts_map.length - 1);
@@ -198,7 +199,9 @@ showSnack() {
     motionSensors.screenOrientation.listen((ScreenOrientationEvent event) {
       event.angle == 0 || event.angle == 180 || event.angle == -180.0 ?
       portrait = true : portrait = false;
-      print(event.angle);
+      if (kDebugMode) {
+        debugPrint(event.angle.toString());
+      }
       setter();
     });
 
@@ -209,7 +212,7 @@ showSnack() {
     openVariables();
     ///проверить наличие БД
 
-    db.setDB();
+    db.setdb();
     WakelockPlus.enable();
     WakelockPlus.toggle(enable: true);
     super.initState();
@@ -234,39 +237,45 @@ showSnack() {
     // Приложение выключено
 
     if(state == AppLifecycleState.inactive){
-      print('Приложение не активно');
+      if (kDebugMode) {
+        print('Приложение не активно');
+      }
     }
     else if(state == AppLifecycleState.detached){
-      print('Приложение выключено');
+      if (kDebugMode) {
+        print('Приложение выключено');
+      }
       if(!trackModel.recordInProgress) {
         trackModel.stopRecord();
       }
     }
     else if(state == AppLifecycleState.paused){
-      print('приложение свернуто');
+      if (kDebugMode) {
+        print('приложение свернуто');
+      }
     }
     else if(state == AppLifecycleState.resumed){
-      kDebugMode ? print('🔙 Вернулись в приложение') : null;
+      if(kDebugMode )print('🔙 Вернулись в приложение');
 
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    ScreenWidth = MediaQuery.of(context).size.width;
+    screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       body: viewTunes.mapTable == 0 ? Stack(
         children: [
           GraphicsView(),
-          Buttons()
+          const Buttons()
 
         ],
       )
           : Stack(
           children: [
             TableView(),
-            Buttons()
+            const Buttons()
 
           ],
       )

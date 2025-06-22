@@ -95,7 +95,7 @@ class _DataChannelSampleState extends State<DataChannelSample> {
     _signaling?.onDataChannelMessage = (_, dc, RTCDataChannelMessage data) {
       setState(() {
         if (data.isBinary) {
-          print('Got binary [' + data.binary.toString() + ']');
+          debugPrint('Got binary [' + data.binary.toString() + ']');
         } else {
           _text = data.text;
         }
@@ -125,7 +125,7 @@ class _DataChannelSampleState extends State<DataChannelSample> {
           break;
         case CallState.CallStateBye:
           if (_waitAccept) {
-            print('peer reject');
+            debugPrint('peer reject');
             _waitAccept = false;
             Navigator.of(context).pop(false);
           }

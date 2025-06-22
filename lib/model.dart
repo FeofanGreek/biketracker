@@ -9,6 +9,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'calories_calculator.dart';
 import 'main.dart';
 import 'dart:io';
 
@@ -54,9 +55,14 @@ class Track{
   List<LatLng>? ploylinePositions = [];
   bool recordInProgress = false;
   late StreamSubscription<Position> positionStream;
-  LatLng currenLocation = LatLng(0.0,0.0);
-  LatLng targetCoords = LatLng(0.0,0.0);
+  LatLng currenLocation = const LatLng(0.0,0.0);
+  LatLng targetCoords = const LatLng(0.0,0.0);
   final MapController controllerMap = MapController();
+
+
+  // Вычисляем длительность в часах
+  double get durationInHours => trackDuration!.inSeconds / 3600;
+  double get caloriesBurned => elevationCoeff() * userWeight * durationInHours;
 
   Track({
     this.trackID,
@@ -73,8 +79,36 @@ class Track{
     required this.heightStory
   });
 
+  ///учет изменения высоты
+  double elevationCoeff(){
+    double gainUp = 0;
+    double gainDown = 0;
 
-  factory Track.fromMap(Map<String, dynamic> _json) => Track(circlesStory: [], heightStory: []);
+    for (int i = 1; i < heightStory.length; i++) {
+      double delta = heightStory[i] - heightStory[i - 1];
+
+      if (delta > 0) {
+        gainUp += delta;
+      } else {
+        gainDown += -delta;
+      }
+    }
+
+// Коэффициент коррекции MET: чем больше подъемов — тем выше MET
+    double elevationFactor = 1.0;
+
+    if (gainUp > 50 && gainUp > gainDown) {
+      elevationFactor += (gainUp - gainDown) / 200; // 1 MET на каждые 200 м превышения набора над спуском
+      elevationFactor = elevationFactor.clamp(1.0, 1.5); // Ограничим рост MET максимум до +50%
+    }
+
+    double metBase = getMET(middleSpeed!); // Как раньше по средней скорости
+    double metCorrected = metBase * elevationFactor;
+    return metCorrected;
+  }
+
+
+  factory Track.fromMap(Map<String, dynamic> json) => Track(circlesStory: [], heightStory: []);
 
   ///stoping record track
   Future<bool>stopRecord()async{
@@ -86,8 +120,8 @@ class Track{
       maxHeight = 0;
       ploylinePositions = [];
       positions = [];
-      trackDuration = Duration(seconds: 0);
-      circleDuration = Duration(seconds: 0);
+      trackDuration = const Duration(seconds: 0);
+      circleDuration = const Duration(seconds: 0);
       //circlesStory = [];
       stopTime = DateTime.now();
       startCircle = DateTime.now();
@@ -99,7 +133,7 @@ class Track{
   }
 
   ///starting record track
-  startRecord(){
+ void startRecord(){
     name = '${DateFormat.yMMMd('ru').format(DateTime.now())} ${DateFormat.Hms('ru').format(DateTime.now())}';
     startTime = DateTime.now();
     trackID = 0;
@@ -109,16 +143,15 @@ class Track{
     maxHeight = 0;
     ploylinePositions = [];
     positions = [];
-    trackDuration = Duration(seconds: 0);
-    circleDuration = Duration(seconds: 0);
+    trackDuration = const Duration(seconds: 0);
+    circleDuration = const Duration(seconds: 0);
     circlesStory = [];
     startTime = DateTime.now();
     startCircle = DateTime.now();
     heightStory = [];
   }
 
-
-  setValues(Position position)async{
+  Future<void> setValues(Position position)async{
 
       speed = position.speed * 3.6;
       speeds.add(position.speed * 3.6);
@@ -157,30 +190,30 @@ class Track{
       trackID == 0 && recordInProgress ? ploylinePositions!.add(currenLocation) : null;
       try{
         ///перемещать карту тогда когда идет запись трека и трекИД == 0
-        trackID == 0 ? controllerMap.move(currenLocation, controllerMap.zoom) : null;
-      }catch(e){}
-
+        trackID == 0 ? controllerMap.move(currenLocation, controllerMap.camera.zoom) : null;
+      }catch(e){
+        debugPrint(e.toString());
+      }
       MyHomePageState.instance.setter();
-
   }
 
 }
 
-class DBdriver{
+class DbDriver{
 
-  getDBPath()async{
+  getDbPath()async{
     var databasesPath = await getDatabasesPath();
     String path = join(databasesPath, 'test.db');
     return path;
   }
 
   ///определяем есть ли БД или еще нет
-  Future<bool>ExistsDB()async{
-    return await File(await getDBPath()).exists();
+  Future<bool>existsDb()async{
+    return await File(await getDbPath()).exists();
   }
 
-  setDB()async{
-    if(await ExistsDB()){
+  Future<bool> setdb()async{
+    if(await existsDb()){
       ///БД есть возвращаем удачу
       return true;
     }else{
@@ -191,12 +224,12 @@ class DBdriver{
   }
 
   ///создавалка всех таблиц
-  createTables()async{
-    Database database = await openDatabase(await getDBPath(), version: 1,);
-    await database.transaction((DB) async {
+  Future<void> createTables()async{
+    Database database = await openDatabase(await getDbPath(), version: 1,);
+    await database.transaction((db) async {
       ///создаем таблицу треков
 
-      await DB.rawQuery('CREATE TABLE Tracks ('
+      await db.rawQuery('CREATE TABLE Tracks ('
           'id INTEGER PRIMARY KEY, '
           'maxSpeed REAL, '
           'middleSpeed REAL, '
@@ -215,9 +248,9 @@ class DBdriver{
   ///записать трек
   Future<int>recordTrack(Track track)async{
     int result = 0;
-    Database database = await openDatabase(await getDBPath(), version: 1,);
-    await database.transaction((DB) async {
-      result = await DB.rawInsert('INSERT INTO [Tracks] ([maxSpeed], [middleSpeed], [maxHeight], [trackDuration], [currentDistance], [ploylinePositions], [circles], [heights], [startTime], [stopTime], [name]) '
+    Database database = await openDatabase(await getDbPath(), version: 1,);
+    await database.transaction((db) async {
+      result = await db.rawInsert('INSERT INTO [Tracks] ([maxSpeed], [middleSpeed], [maxHeight], [trackDuration], [currentDistance], [ploylinePositions], [circles], [heights], [startTime], [stopTime], [name]) '
           'VALUES(?,?,?,?,?,?,?,?,?,?,?)',
           [
             track.maxSpeed,
@@ -239,9 +272,9 @@ class DBdriver{
   ///get track list
   Future<List<Track>> getTrackList()async{
     List<Track> tracks = [];
-    Database database = await openDatabase(await getDBPath(), version: 1,);
-    await database.transaction((DB) async {
-      await DB.rawQuery('SELECT * FROM [Tracks] WHERE 1').then((value){
+    Database database = await openDatabase(await getDbPath(), version: 1,);
+    await database.transaction((db) async {
+      await db.rawQuery('SELECT * FROM [Tracks] WHERE 1').then((value){
         for(Map item in value){
           tracks.add(Track(
             trackID: item['id'],
@@ -264,9 +297,9 @@ class DBdriver{
   }
 
   Future<bool>deleteRecord(Track track)async{
-    Database database = await openDatabase(await getDBPath(), version: 1,);
-    await database.transaction((DB) async {
-      await DB.rawDelete('DELETE FROM [Tracks] WHERE [id] = ?',
+    Database database = await openDatabase(await getDbPath(), version: 1,);
+    await database.transaction((db) async {
+      await db.rawDelete('DELETE FROM [Tracks] WHERE [id] = ?',
           [
             track.trackID,
 
@@ -277,10 +310,10 @@ class DBdriver{
 
 
   ///обновить пользователя
-  updateTrack(Track track)async{
-    Database database = await openDatabase(await getDBPath(), version: 1,);
-    await database.transaction((DB) async {
-      await DB.rawUpdate('UPDATE [Tracks] SET [name] = ? WHERE [id] = ? ',
+ Future<void> updateTrack(Track track)async{
+    Database database = await openDatabase(await getDbPath(), version: 1,);
+    await database.transaction((db) async {
+      await db.rawUpdate('UPDATE [Tracks] SET [name] = ? WHERE [id] = ? ',
           [
             track.name,
             track.trackID

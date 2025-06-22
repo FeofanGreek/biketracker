@@ -68,6 +68,8 @@ getData(int id){
 
 
 class TableView extends StatelessWidget {
+  const TableView({super.key});
+
 
   void _onReorder(int oldIndex, int newIndex) async{
     Map row = viewTunes.contentData.removeAt(oldIndex);
@@ -86,8 +88,8 @@ class TableView extends StatelessWidget {
     TextStyle titleStyle = const TextStyle(fontSize: 10, color:Colors.white);
     TextStyle dataStyleVeryBig = const TextStyle(fontSize: 70,fontWeight: FontWeight.bold, height: 1, color: Colors.lightGreenAccent);
     if(width == 0.0){
-      width = MyHomePageState.instance.ScreenWidth / 2.2;
-      viewTunes.contentData.where((element) => element['title'] == title).first['width'] = MyHomePageState.instance.ScreenWidth / 2.2;
+      width = MyHomePageState.instance.screenWidth / 2.2;
+      viewTunes.contentData.where((element) => element['title'] == title).first['width'] = MyHomePageState.instance.screenWidth / 2.2;
     }
     if(height == 0.0){
       height = 63.0;
@@ -99,7 +101,7 @@ class TableView extends StatelessWidget {
         if(!trackModel.recordInProgress){
           // Swiping in right direction.
           if (details.delta.dx > 0) {
-            width = MyHomePageState.instance.ScreenWidth - 34;
+            width = MyHomePageState.instance.screenWidth - 34;
             viewTunes.contentData.where((element) => element['title'] == title).first['width'] = width;
             //print('right');
             MyHomePageState.instance.setter();
@@ -107,7 +109,7 @@ class TableView extends StatelessWidget {
 
           // Swiping in left direction.
           if (details.delta.dx < 0) {
-            width = MyHomePageState.instance.ScreenWidth / 2.2;
+            width = MyHomePageState.instance.screenWidth / 2.2;
             viewTunes.contentData.where((element) => element['title'] == title).first['width'] = width;
             //print('left');
             MyHomePageState.instance.setter();
@@ -156,7 +158,7 @@ class TableView extends StatelessWidget {
                   Row(
                     children: [
                       Text(title ,style: titleStyle),
-                      Spacer(),
+                      const Spacer(),
                       if(withbutton && !trackModel.recordInProgress)GestureDetector(
                         onTap: ()async{
                           viewTunes.contentData.where((element) => element['title'] == title).first['visible'] = false;
@@ -170,7 +172,7 @@ class TableView extends StatelessWidget {
                           width: 10,
                           height: 10,
                           color: Colors.transparent,
-                          child: Icon(CupertinoIcons.clear, size: 10, color: Colors.white,),
+                          child: const Icon(CupertinoIcons.clear, size: 10, color: Colors.white,),
                         ),
                       )
                     ],
@@ -185,12 +187,12 @@ class TableView extends StatelessWidget {
                     ),
                   ),
                 ]),
-            if(!trackModel.recordInProgress)Positioned(
+            if(!trackModel.recordInProgress)const Positioned(
               right: -7,
                 top: 15,
                 child: Icon(CupertinoIcons.resize_v, color: Colors.orange,)
             ),
-            if(!trackModel.recordInProgress)Positioned(
+            if(!trackModel.recordInProgress)const Positioned(
                 right: 13,
                 top: -5,
                 child: Icon(CupertinoIcons.resize_h, color: Colors.orange,)
@@ -210,7 +212,7 @@ class TableView extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       child: SingleChildScrollView(
-        physics: trackModel.recordInProgress ? ScrollPhysics() : NeverScrollableScrollPhysics(),
+        physics: trackModel.recordInProgress ? const ScrollPhysics() : const NeverScrollableScrollPhysics(),
         child: Column(
           children: [
             ///switch or save
@@ -221,7 +223,7 @@ class TableView extends StatelessWidget {
               height: 50,
               child: Row(
                 children: [
-                  Container(
+                  SizedBox(
                     width: MediaQuery.of(context).size.width - 130,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
@@ -330,12 +332,13 @@ class TableView extends StatelessWidget {
                   //this callback is optional
                   debugPrint('${DateTime.now().toString().substring(5, 22)} reorder started: index:$index');
                 },
-                children: viewTunes.contentData.map((item) => item['visible'] ? element(getData(int.parse(item['id'])), item['title'], item['width'], item['height'], item['visible'], true ) : SizedBox.shrink()).toList().cast<Widget>(),
+                children: viewTunes.contentData.map((item) => item['visible'] ? element(getData(int.parse(item['id'])), item['title'], item['width'], item['height'], item['visible'], true )
+                    : const SizedBox.shrink()).toList().cast<Widget>(),
                 buildDraggableFeedback:(context, constrain, child)=>child,
             ),
             if(trackModel.recordInProgress) const Text('Круги', style: TextStyle(fontSize: 16, color:Colors.white),),
             Wrap(
-              children: trackModel.circlesStory.asMap().map((index, e) => MapEntry(index, element(printDuration(e), 'Круг ${index + 1}',MyHomePageState.instance.ScreenWidth / 2.2, 63.0 ,true, false))).values.toList().cast<Widget>(),
+              children: trackModel.circlesStory.asMap().map((index, e) => MapEntry(index, element(printDuration(e), 'Круг ${index + 1}',MyHomePageState.instance.screenWidth / 2.2, 63.0 ,true, false))).values.toList().cast<Widget>(),
             )
           ],
         ),

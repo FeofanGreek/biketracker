@@ -147,10 +147,15 @@ class ButtonsState extends State<Buttons> with WidgetsBindingObserver {
                                           MyHomePageState.instance.setter();
                                           Timer(const Duration(seconds: 1),()async{
                                             try{
-                                              var cZ = trackModel.controllerMap.centerZoomFitBounds(LatLngBounds.fromPoints(trackModel.ploylinePositions!));
-                                              await trackModel.controllerMap.move(cZ.center, cZ.zoom - 1);
-                                              await trackModel.controllerMap.moveAndRotate(trackModel.controllerMap.center, trackModel.controllerMap.zoom, 0.0);
-                                            }catch(e){}
+                                              CameraFit fit = CameraFit.bounds(bounds: LatLngBounds.fromPoints(trackModel.ploylinePositions!));
+                                              var cZ = trackModel.controllerMap.fitCamera(fit);//    .centerZoomFitBounds(LatLngBounds.fromPoints(trackModel.ploylinePositions!));
+
+
+                                              //trackModel.controllerMap.move(cZ.center, cZ.zoom - 1);
+                                              trackModel.controllerMap.moveAndRotate(trackModel.controllerMap.camera.center, trackModel.controllerMap.camera.zoom, 0.0);
+                                            }catch(e){
+                                              debugPrint(e.toString());
+                                            }
 
                                             Navigator.pop(context);
                                           });

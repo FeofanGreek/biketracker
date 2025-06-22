@@ -9,8 +9,10 @@ import 'src/route_item.dart';
 
 
 class P2PApp extends StatefulWidget {
+  const P2PApp({super.key});
+
   @override
-  _P2PAppState createState() => new _P2PAppState();
+  P2PAppState createState() => P2PAppState();
 }
 
 enum DialogDemoAction {
@@ -18,7 +20,7 @@ enum DialogDemoAction {
   connect,
 }
 
-class _P2PAppState extends State<P2PApp> {
+class P2PAppState extends State<P2PApp> {
   List<RouteItem> items = [];
   String _server = 'https://0.0.0.0:8086';
   late SharedPreferences _prefs;
@@ -36,9 +38,9 @@ class _P2PAppState extends State<P2PApp> {
       ListTile(
         title: Text(item.title),
         onTap: () => item.push(context),
-        trailing: Icon(Icons.arrow_right),
+        trailing: const Icon(Icons.arrow_right),
       ),
-      Divider()
+      const Divider()
     ]);
   }
 
@@ -73,17 +75,19 @@ class _P2PAppState extends State<P2PApp> {
       context: context,
       builder: (BuildContext context) => child,
     ).then<void>((T? value) {
-      print(value);
+      debugPrint(value.toString());
       // The value passed to Navigator.pop() or null.
       if (value != null) {
         if (value == DialogDemoAction.connect) {
           _prefs.setString('server', _server);
-          Navigator.pushReplacement(
+         if(context.mounted) {
+           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                   builder: (BuildContext context) => _datachannel
                       ? DataChannelSample(host: _server)
                       : CallSample(host: _server))); //https://0.0.0.0:8086
+         }
         }
       }
     });
