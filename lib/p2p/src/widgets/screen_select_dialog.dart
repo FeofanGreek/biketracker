@@ -79,8 +79,8 @@ class _ThumbnailWidgetState extends State<ThumbnailWidget> {
 
 // ignore: must_be_immutable
 class ScreenSelectDialog extends Dialog {
-  ScreenSelectDialog() {
-    Future.delayed(Duration(milliseconds: 100), () {
+  ScreenSelectDialog({super.key}) {
+    Future.delayed(const Duration(milliseconds: 100), () {
       _getSources();
     });
     _subscriptions.add(desktopCapturer.onAdded.stream.listen((source) {
@@ -107,9 +107,9 @@ class ScreenSelectDialog extends Dialog {
 
   void _ok(context) async {
     _timer?.cancel();
-    _subscriptions.forEach((element) {
+    for (var element in _subscriptions) {
       element.cancel();
-    });
+    }
     Navigator.pop<DesktopCapturerSource>(context, _selected_source);
   }
 
@@ -129,13 +129,13 @@ class ScreenSelectDialog extends Dialog {
             'name: ${element.name}, id: ${element.id}, type: ${element.type}');
       });
       _timer?.cancel();
-      _timer = Timer.periodic(Duration(seconds: 3), (timer) {
+      _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
         desktopCapturer.updateSources(types: [_sourceType]);
       });
       _sources.clear();
-      sources.forEach((element) {
+      for (var element in sources) {
         _sources[element.id] = element;
-      });
+      }
       _stateSetter?.call(() {});
       return;
     } catch (e) {
@@ -155,20 +155,20 @@ class ScreenSelectDialog extends Dialog {
         child: Column(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Stack(
                 children: <Widget>[
-                  Align(
+                  const Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      'Choose what to share',
+                      'Выбор чем делиться',
                       style: TextStyle(fontSize: 16, color: Colors.black87),
                     ),
                   ),
                   Align(
                     alignment: Alignment.topRight,
                     child: InkWell(
-                      child: Icon(Icons.close),
+                      child: const Icon(Icons.close),
                       onTap: () => _cancel(context),
                     ),
                   ),
@@ -179,7 +179,7 @@ class ScreenSelectDialog extends Dialog {
               flex: 1,
               child: Container(
                 width: double.infinity,
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 child: StatefulBuilder(
                   builder: (context, setState) {
                     _stateSetter = setState;
@@ -188,84 +188,80 @@ class ScreenSelectDialog extends Dialog {
                       child: Column(
                         children: <Widget>[
                           Container(
-                            constraints: BoxConstraints.expand(height: 24),
+                            constraints: const BoxConstraints.expand(height: 24),
                             child: TabBar(
                                 onTap: (value) => Future.delayed(
-                                        Duration(milliseconds: 300), () {
+                                        const Duration(milliseconds: 300), () {
                                       _sourceType = value == 0
                                           ? SourceType.Screen
                                           : SourceType.Window;
                                       _getSources();
                                     }),
-                                tabs: [
+                                tabs: const [
                                   Tab(
                                       child: Text(
-                                    'Entire Screen',
+                                    'Полный экран',
                                     style: TextStyle(color: Colors.black54),
                                   )),
                                   Tab(
                                       child: Text(
-                                    'Window',
+                                    'Окно',
                                     style: TextStyle(color: Colors.black54),
                                   )),
                                 ]),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 2,
                           ),
                           Expanded(
-                            child: Container(
-                              child: TabBarView(children: [
-                                Align(
-                                    alignment: Alignment.center,
-                                    child: Container(
-                                      child: GridView.count(
-                                        crossAxisSpacing: 8,
-                                        crossAxisCount: 2,
-                                        children: _sources.entries
-                                            .where((element) =>
-                                                element.value.type ==
-                                                SourceType.Screen)
-                                            .map((e) => ThumbnailWidget(
-                                                  onTap: (source) {
-                                                    setState(() {
-                                                      _selected_source = source;
-                                                    });
-                                                  },
-                                                  source: e.value,
-                                                  selected:
-                                                      _selected_source?.id ==
-                                                          e.value.id,
-                                                ))
-                                            .toList(),
-                                      ),
-                                    )),
-                                Align(
-                                    alignment: Alignment.center,
-                                    child: Container(
-                                      child: GridView.count(
-                                        crossAxisSpacing: 8,
-                                        crossAxisCount: 3,
-                                        children: _sources.entries
-                                            .where((element) =>
-                                                element.value.type ==
-                                                SourceType.Window)
-                                            .map((e) => ThumbnailWidget(
-                                                  onTap: (source) {
-                                                    setState(() {
-                                                      _selected_source = source;
-                                                    });
-                                                  },
-                                                  source: e.value,
-                                                  selected:
-                                                      _selected_source?.id ==
-                                                          e.value.id,
-                                                ))
-                                            .toList(),
-                                      ),
-                                    )),
-                              ]),
-                            ),
+                            child: TabBarView(children: [
+                              Align(
+                                  alignment: Alignment.center,
+                                  child: GridView.count(
+                                    crossAxisSpacing: 8,
+                                    crossAxisCount: 2,
+                                    children: _sources.entries
+                                        .where((element) =>
+                                            element.value.type ==
+                                            SourceType.Screen)
+                                        .map((e) => ThumbnailWidget(
+                                              onTap: (source) {
+                                                setState(() {
+                                                  _selected_source = source;
+                                                });
+                                              },
+                                              source: e.value,
+                                              selected:
+                                                  _selected_source?.id ==
+                                                      e.value.id,
+                                            ))
+                                        .toList(),
+                                  )),
+                              Align(
+                                  alignment: Alignment.center,
+                                  child: Container(
+                                    child: GridView.count(
+                                      crossAxisSpacing: 8,
+                                      crossAxisCount: 3,
+                                      children: _sources.entries
+                                          .where((element) =>
+                                              element.value.type ==
+                                              SourceType.Window)
+                                          .map((e) => ThumbnailWidget(
+                                                onTap: (source) {
+                                                  setState(() {
+                                                    _selected_source = source;
+                                                  });
+                                                },
+                                                source: e.value,
+                                                selected:
+                                                    _selected_source?.id ==
+                                                        e.value.id,
+                                              ))
+                                          .toList(),
+                                    ),
+                                  )),
+                            ]),
                           )
                         ],
                       ),
@@ -274,13 +270,13 @@ class ScreenSelectDialog extends Dialog {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: double.infinity,
-              child: ButtonBar(
+              child: OverflowBar(
                 children: <Widget>[
                   MaterialButton(
-                    child: Text(
-                      'Cancel',
+                    child: const Text(
+                      'Отмена',
                       style: TextStyle(color: Colors.black54),
                     ),
                     onPressed: () {
@@ -289,8 +285,8 @@ class ScreenSelectDialog extends Dialog {
                   ),
                   MaterialButton(
                     color: Theme.of(context).primaryColor,
-                    child: Text(
-                      'Share',
+                    child: const Text(
+                      'Разрешить',
                     ),
                     onPressed: () {
                       _ok(context);

@@ -80,7 +80,7 @@ class MapFlutterState extends State<MapFlutter> {
         options: MapOptions(
           onLongPress: (position, coords){
             trackModel.targetCoords = coords;
-            MyHomePageState.instance.setter();
+            MainPageState.instance.setter();
           },
             initialCenter: trackModel.currenLocation,
             initialZoom: 18,

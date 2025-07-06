@@ -38,6 +38,8 @@
 	<string>Для видеозвонков из приложения нам необходим доступ к микрофону вашего устройства</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+    <key>NSBluetoothAlwaysUsageDescription</key>
+        <string>Для подключения к гарнитурам Bluetooth, Smart часам, силовым педалям, разрешите доступ к Bluetooth</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

@@ -1,4 +1,6 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    android:installLocation="preferExternal"
+    package="ru.koldashev.biketracker">
     <uses-permission
         android:name="android.permission.INTERNET"/>
     <uses-permission

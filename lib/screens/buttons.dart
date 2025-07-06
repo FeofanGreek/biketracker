@@ -72,8 +72,8 @@ class ButtonsState extends State<Buttons> with WidgetsBindingObserver {
                             backgroundColor: Colors.orange,
                           ),
                           onPressed: (){
-                            MyHomePageState.instance.showCart = !MyHomePageState.instance.showCart;
-                            MyHomePageState.instance.setter();
+                            MainPageState.instance.showCart = !MainPageState.instance.showCart;
+                            MainPageState.instance.setter();
                             Navigator.pop(context);
                           },
                           icon: Icon(Icons.show_chart),
@@ -108,7 +108,7 @@ class ButtonsState extends State<Buttons> with WidgetsBindingObserver {
                             viewTunes.mapTable == 0 ? viewTunes.mapTable = 1 : viewTunes.mapTable = 0;
                             var prefs = await SharedPreferences.getInstance();
                             prefs.setInt('mapTable', viewTunes.mapTable);
-                            MyHomePageState.instance.setter();
+                            MainPageState.instance.setter();
                             Navigator.pop(context);
                           },
                           icon: Icon(viewTunes.mapTable == 1 ? CupertinoIcons.map : CupertinoIcons.table),
@@ -144,7 +144,7 @@ class ButtonsState extends State<Buttons> with WidgetsBindingObserver {
                                       return GestureDetector(
                                         onTap:()async{
                                           trackModel = value[index];
-                                          MyHomePageState.instance.setter();
+                                          MainPageState.instance.setter();
                                           Timer(const Duration(seconds: 1),()async{
                                             try{
                                               CameraFit fit = CameraFit.bounds(bounds: LatLngBounds.fromPoints(trackModel.ploylinePositions!));

@@ -7,12 +7,12 @@ import 'package:biketracker/screens/graphics_view.dart';
 import 'package:biketracker/screens/table_view.dart';
 import 'package:biketracker/utils.dart';
 import 'package:biketracker/variables.dart';
+import 'package:biketracker/widgets/speed_limit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:intl/intl.dart';
-import 'package:motion_sensors/motion_sensors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
@@ -24,6 +24,7 @@ import 'package:go_router/go_router.dart';
 import 'dart:core';
 import 'package:flutter_background/flutter_background.dart';
 
+import 'p2p/main_video_call.dart';
 import 'p2p/src/call_sample/call_sample.dart';
 
 
@@ -149,20 +150,21 @@ class MyApp extends StatelessWidget {
         Locale('ru', ''),
 
       ],
-      home: const MyHomePage()
+      home: const MainPage()
+        //home: const P2PApp()
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key,});
+class MainPage extends StatefulWidget {
+  const MainPage({super.key,});
 
   @override
-  State<MyHomePage> createState() => MyHomePageState();
+  State<MainPage> createState() => MainPageState();
 }
 
-class MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
-  static late MyHomePageState instance;
+class MainPageState extends State<MainPage> with WidgetsBindingObserver {
+  static late MainPageState instance;
   double screenWidth = 0.0;
   bool showCart = true;
 
@@ -194,16 +196,6 @@ showSnack() {
   void initState() {
     viewTunes.initTunes();
     WidgetsBinding.instance.addObserver(this);
-
-    ///ориентация телефона
-    motionSensors.screenOrientation.listen((ScreenOrientationEvent event) {
-      event.angle == 0 || event.angle == 180 || event.angle == -180.0 ?
-      portrait = true : portrait = false;
-      if (kDebugMode) {
-        debugPrint(event.angle.toString());
-      }
-      setter();
-    });
 
   instance = this;
   ///проверить доступ к геолокаци
@@ -263,19 +255,24 @@ showSnack() {
   @override
   Widget build(BuildContext context) {
     screenWidth = MediaQuery.of(context).size.width;
+    final Orientation orientation = MediaQuery.of(context).orientation;
+    portrait = orientation == Orientation.portrait;
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       body: viewTunes.mapTable == 0 ? Stack(
         children: [
           GraphicsView(),
-          const Buttons()
+          const Buttons(),
+          Positioned(
+            top: portrait ? MediaQuery.of(context).size.height / 2 - 20 : MediaQuery.of(context).size.height,
+              child: const SpeedControlSlider()),
 
         ],
       )
-          : Stack(
+          : const Stack(
           children: [
             TableView(),
-            const Buttons()
+            Buttons(),
 
           ],
       )

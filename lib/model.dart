@@ -194,7 +194,7 @@ class Track{
       }catch(e){
         debugPrint(e.toString());
       }
-      MyHomePageState.instance.setter();
+      MainPageState.instance.setter();
   }
 
 }

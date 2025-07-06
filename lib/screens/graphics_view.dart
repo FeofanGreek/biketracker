@@ -9,19 +9,19 @@ class GraphicsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MyHomePageState.instance.portrait ? Column(
+    return MainPageState.instance.portrait ? Column(
       children: [
         Speedometr(),
-        Expanded(
+        const Expanded(
           child: MapFlutter(),
         ),
         ///график отображать в портретной ориентации
-        if(MyHomePageState.instance.showCart) LineChartWidget()
+        if(MainPageState.instance.showCart) LineChartWidget()
       ],
     ) : Row(
       children: [
         Speedometr(),
-        Expanded(
+        const Expanded(
           child: MapFlutter(),
         )
       ],

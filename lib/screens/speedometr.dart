@@ -11,8 +11,8 @@ class Speedometr extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MyHomePageState.instance.portrait ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.height,
-      height: MyHomePageState.instance.portrait ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.height,
+      width: MainPageState.instance.portrait ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.height,
+      height: MainPageState.instance.portrait ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.height,
       color: Colors.blueGrey,
       child: Stack(
         children: [
@@ -83,25 +83,25 @@ class Speedometr extends StatelessWidget {
                                 Column(
                                   children: [
                                     const Text('Пробег трека',style: TextStyle(fontSize: 10, color:Colors.white)),
-                                    Text('${(trackModel.currentDistance! / 1000).toStringAsFixed(2)} км',style: const TextStyle(fontSize: 25,fontWeight: FontWeight.bold, height: 1, color: Colors.lightGreenAccent)),
+                                    Text('${(trackModel.currentDistance! / 1000).toStringAsFixed(2)} км',style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, height: 1, color: Colors.lightGreenAccent)),
 
                                     const Text('Общий пробег',style: TextStyle(fontSize: 10, color:Colors.white)),
-                                    Text('${(trackModel.cumulativeDistance / 1000 ).round()} км',style: const TextStyle(fontSize: 25,fontWeight: FontWeight.bold, height: 1, color: Colors.lightGreenAccent)),
+                                    Text('${(trackModel.cumulativeDistance / 1000 ).round()} км',style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, height: 1, color: Colors.lightGreenAccent)),
 
                                     const Text('Сожжено каллорий',style: TextStyle(fontSize: 10, color:Colors.white)),
-                                    Text('${trackModel.caloriesBurned.toStringAsFixed(0)} ккал',style: const TextStyle(fontSize: 25,fontWeight: FontWeight.bold, height: 1, color: Colors.lightGreenAccent)),
+                                    Text('${trackModel.caloriesBurned.toStringAsFixed(0)} ккал',style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, height: 1, color: Colors.lightGreenAccent)),
 
                                   ],
                                 ),
-                                SizedBox(height: !MyHomePageState.instance.portrait ? MediaQuery.of(context).size.height /3.5 : MediaQuery.of(context).size.width /3.5,),
+                                SizedBox(height: !MainPageState.instance.portrait ? MediaQuery.of(context).size.height /3.5 : MediaQuery.of(context).size.width /3.5,),
                               ]),
                           angle: 90, positionFactor: 0.5
                       )]
                 )]),
           Positioned(
-            top: MyHomePageState.instance.portrait ? 50 : 10,
+            top: MainPageState.instance.portrait ? 50 : 10,
             child: SizedBox(
-              width: MyHomePageState.instance.portrait ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.height,
+              width: MainPageState.instance.portrait ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.height,
               child:Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

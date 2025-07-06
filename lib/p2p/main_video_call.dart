@@ -22,7 +22,7 @@ enum DialogDemoAction {
 
 class P2PAppState extends State<P2PApp> {
   List<RouteItem> items = [];
-  String _server = 'https://0.0.0.0:8086';
+  String _server = 'https://141.8.199.89:8086';
   late SharedPreferences _prefs;
 
   bool _datachannel = false;
@@ -111,12 +111,12 @@ class P2PAppState extends State<P2PApp> {
             ),
             actions: <Widget>[
               TextButton(
-                  child: const Text('CANCEL'),
+                  child: const Text('Сбросить'),
                   onPressed: () {
                     Navigator.pop(context, DialogDemoAction.cancel);
                   }),
               TextButton(
-                  child: const Text('CONNECT'),
+                  child: const Text('Ответить'),
                   onPressed: () {
                     Navigator.pop(context, DialogDemoAction.connect);
                   })

@@ -79,7 +79,7 @@ class TableView extends StatelessWidget {
       var prefs = await SharedPreferences.getInstance();
       prefs.setString('presets', json.encode(viewTunes.presets));
     }
-    MyHomePageState.instance.setter();
+    MainPageState.instance.setter();
   }
 
 
@@ -88,8 +88,8 @@ class TableView extends StatelessWidget {
     TextStyle titleStyle = const TextStyle(fontSize: 10, color:Colors.white);
     TextStyle dataStyleVeryBig = const TextStyle(fontSize: 70,fontWeight: FontWeight.bold, height: 1, color: Colors.lightGreenAccent);
     if(width == 0.0){
-      width = MyHomePageState.instance.screenWidth / 2.2;
-      viewTunes.contentData.where((element) => element['title'] == title).first['width'] = MyHomePageState.instance.screenWidth / 2.2;
+      width = MainPageState.instance.screenWidth / 2.2;
+      viewTunes.contentData.where((element) => element['title'] == title).first['width'] = MainPageState.instance.screenWidth / 2.2;
     }
     if(height == 0.0){
       height = 63.0;
@@ -101,24 +101,24 @@ class TableView extends StatelessWidget {
         if(!trackModel.recordInProgress){
           // Swiping in right direction.
           if (details.delta.dx > 0) {
-            width = MyHomePageState.instance.screenWidth - 34;
+            width = MainPageState.instance.screenWidth - 34;
             viewTunes.contentData.where((element) => element['title'] == title).first['width'] = width;
             //print('right');
-            MyHomePageState.instance.setter();
+            MainPageState.instance.setter();
           }
 
           // Swiping in left direction.
           if (details.delta.dx < 0) {
-            width = MyHomePageState.instance.screenWidth / 2.2;
+            width = MainPageState.instance.screenWidth / 2.2;
             viewTunes.contentData.where((element) => element['title'] == title).first['width'] = width;
             //print('left');
-            MyHomePageState.instance.setter();
+            MainPageState.instance.setter();
           }
           if (details.delta.dy < 0) {
             height = 65;
             viewTunes.contentData.where((element) => element['title'] == title).first['height'] = 65.0;
             //print('right');
-            MyHomePageState.instance.setter();
+            MainPageState.instance.setter();
           }
 
           // Swiping in left direction.
@@ -126,7 +126,7 @@ class TableView extends StatelessWidget {
             height = 130.0;
             viewTunes.contentData.where((element) => element['title'] == title).first['height'] = 130.0;
             //print('left');
-            MyHomePageState.instance.setter();
+            MainPageState.instance.setter();
           }
           if(viewTunes.selectedPreset != -1){
             var prefs = await SharedPreferences.getInstance();
@@ -136,10 +136,10 @@ class TableView extends StatelessWidget {
 
       },
       onPanEnd: (v){
-        MyHomePageState.instance.setter();
+        MainPageState.instance.setter();
       },
       onPanCancel: (){
-        MyHomePageState.instance.setter();
+        MainPageState.instance.setter();
       },
       child: Container(
         width: width,
@@ -166,7 +166,7 @@ class TableView extends StatelessWidget {
                             var prefs = await SharedPreferences.getInstance();
                             prefs.setString('presets', json.encode(viewTunes.presets));
                           }
-                          MyHomePageState.instance.setter();
+                          MainPageState.instance.setter();
                         },
                         child: Container(
                           width: 10,
@@ -182,7 +182,7 @@ class TableView extends StatelessWidget {
                     height: height! - 26,
                     child: AutoSizeText(
                       data,
-                      //style: width == MyHomePageState.instance.ScreenWidth - 34 && height == 130 ? dataStyleVeryBig : width == MyHomePageState.instance.ScreenWidth / 2.2 && height == 130 ? dataStyleBig : dataStyle,
+                      //style: width == MainPageState.instance.ScreenWidth - 34 && height == 130 ? dataStyleVeryBig : width == MainPageState.instance.ScreenWidth / 2.2 && height == 130 ? dataStyleBig : dataStyle,
                       style: dataStyleVeryBig,
                     ),
                   ),
@@ -238,7 +238,7 @@ class TableView extends StatelessWidget {
                               viewTunes.selectedPreset = index;
                               var prefs = await SharedPreferences.getInstance();
                               prefs.setInt('selectedPreset', index);
-                              MyHomePageState.instance.setter();
+                              MainPageState.instance.setter();
 
                             },
                             onLongPress: ()async{
@@ -246,7 +246,7 @@ class TableView extends StatelessWidget {
                               viewTunes.presets.removeAt(index);
                               var prefs = await SharedPreferences.getInstance();
                               prefs.setString('presets', json.encode(viewTunes.presets));
-                              MyHomePageState.instance.setter();
+                              MainPageState.instance.setter();
                               viewTunes.contentData = [
                                 {"title" : 'Текущ. скорость', "id" : "1", "width" : 0.0, "height" : 0.0, "visible" : true},
                                 {"title" : 'Макс. скорость',  "id" : "2", "width" : 0.0, "height" : 0.0,"visible" : true},
@@ -259,7 +259,7 @@ class TableView extends StatelessWidget {
                                 {"title" : 'Время сейчас',  "id" : "10", "width" : 0.0, "height" : 0.0,"visible" : true},
                                 {"title" : 'Время до цели',  "id" : "11", "width" : 0.0, "height" : 0.0,"visible" : true},
                               ];
-                              MyHomePageState.instance.setter();
+                              MainPageState.instance.setter();
                             },
                             child: Container(
                               width: 40,
@@ -296,7 +296,7 @@ class TableView extends StatelessWidget {
                         {"title" : 'Время сейчас',  "id" : "10", "width" : 0.0, "height" : 0.0,"visible" : true},
                         {"title" : 'Время до цели',  "id" : "11", "width" : 0.0, "height" : 0.0,"visible" : true},
                       ];
-                      MyHomePageState.instance.setter();
+                      MainPageState.instance.setter();
                     },
                     icon: const Icon(Icons.refresh),
                   ),
@@ -338,7 +338,7 @@ class TableView extends StatelessWidget {
             ),
             if(trackModel.recordInProgress) const Text('Круги', style: TextStyle(fontSize: 16, color:Colors.white),),
             Wrap(
-              children: trackModel.circlesStory.asMap().map((index, e) => MapEntry(index, element(printDuration(e), 'Круг ${index + 1}',MyHomePageState.instance.screenWidth / 2.2, 63.0 ,true, false))).values.toList().cast<Widget>(),
+              children: trackModel.circlesStory.asMap().map((index, e) => MapEntry(index, element(printDuration(e), 'Круг ${index + 1}',MainPageState.instance.screenWidth / 2.2, 63.0 ,true, false))).values.toList().cast<Widget>(),
             )
           ],
         ),

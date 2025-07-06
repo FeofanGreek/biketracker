@@ -268,7 +268,7 @@ class CallSampleState extends State<CallSample> {
                             color: self ? Colors.grey : Colors.black),
                         ///приглашаем на видеозвонок
                         onPressed: () => _invitePeer(context, peer['id'], false),
-                        tooltip: 'Video calling',
+                        tooltip: 'Приглашение в видеозвонок',
                       ),
                       // IconButton(
                       //   icon: Icon(self ? Icons.close : Icons.screen_share,
@@ -305,7 +305,7 @@ class CallSampleState extends State<CallSample> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   FloatingActionButton(
-                    tooltip: 'Camera',
+                    tooltip: 'Камера',
                     onPressed: _switchCamera,
                     child: const Icon(Icons.switch_camera),
                   ),
@@ -316,12 +316,12 @@ class CallSampleState extends State<CallSample> {
                   // ),
                   FloatingActionButton(
                     onPressed: _hangUp,
-                    tooltip: 'Hangup',
+                    tooltip: 'Завершить',
                     backgroundColor: Colors.pink,
                     child: const Icon(Icons.call_end),
                   ),
                   FloatingActionButton(
-                    tooltip: 'Mute Mic',
+                    tooltip: 'Без звука',
                     onPressed: _muteMic,
                     child: const Icon(Icons.mic_off),
                   )
