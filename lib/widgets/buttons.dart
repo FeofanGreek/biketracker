@@ -9,10 +9,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../dialog.dart';
 import '../main.dart';
-import '../p2p/src/call_sample/call_sample.dart';
-import '../utils.dart';
-import '../widgets/record_position_button.dart';
-import '../widgets/text_field.dart';
+//import '../p2p/src/call_sample/call_sample.dart';
+import '../utilites/utils.dart';
+import 'record_position_button.dart';
+import 'text_field.dart';
 
 
 class Buttons extends StatefulWidget {
@@ -72,29 +72,29 @@ class ButtonsState extends State<Buttons> with WidgetsBindingObserver {
                             backgroundColor: Colors.orange,
                           ),
                           onPressed: (){
-                            MainPageState.instance.showCart = !MainPageState.instance.showCart;
+                            MainPageState.instance.showChart = !MainPageState.instance.showChart;
                             MainPageState.instance.setter();
                             Navigator.pop(context);
                           },
-                          icon: Icon(Icons.show_chart),
+                          icon: const Icon(Icons.show_chart),
                         ),
                       ),
-                      DropdownMenuItem<int>(
-                        value: 3,
-                        child:  ///кнопки чата
-                        IconButton(
-                          style: TextButton.styleFrom(
-                            side: const BorderSide(color: Colors.white),
-                            foregroundColor: Colors.white,
-                            backgroundColor: Colors.orange,
-                          ),
-                          onPressed: ()=> Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) => CallSample(host: '141.8.199.89'))),
-                          icon: Icon(CupertinoIcons.chat_bubble_2_fill),
-                        ),
-                      ),
+                      // DropdownMenuItem<int>(
+                      //   value: 3,
+                      //   child:  ///кнопки чата
+                      //   IconButton(
+                      //     style: TextButton.styleFrom(
+                      //       side: const BorderSide(color: Colors.white),
+                      //       foregroundColor: Colors.white,
+                      //       backgroundColor: Colors.orange,
+                      //     ),
+                      //     onPressed: ()=> Navigator.pushReplacement(
+                      //         context,
+                      //         MaterialPageRoute(
+                      //             builder: (BuildContext context) => CallSample(host: '141.8.199.89'))),
+                      //     icon: Icon(CupertinoIcons.chat_bubble_2_fill),
+                      //   ),
+                      // ),
                       DropdownMenuItem<int>(
                         value: 4,
                         child:  ///режим табличное или с картой спидометром
@@ -131,13 +131,14 @@ class ButtonsState extends State<Buttons> with WidgetsBindingObserver {
                                 showBottomButton: false,
                                 showTopButton: false,
                                 showCloseButton: true,
-                                dialogBody: Container(
-                                  //width: 300,
+                                dialogBody: SizedBox(
+                                  width: 350,
                                   height: 350,
                                   child: ListView.separated(
                                     physics: const ScrollPhysics(),
                                     itemCount: value.length,
                                     shrinkWrap: true,
+                                    reverse: true,
                                     separatorBuilder: (BuildContext context, int index) =>
                                     const Divider(thickness: 1, color: Colors.white),
                                     itemBuilder: (context, index) {
@@ -200,7 +201,7 @@ class ButtonsState extends State<Buttons> with WidgetsBindingObserver {
                                                 )
                                               ],
                                             ),
-                                            Spacer(),
+                                            const Spacer(),
                                             IconButton(
                                                 onPressed: ()async{
                                                   await db.deleteRecord(value[index]).then((value){
@@ -285,7 +286,7 @@ class ButtonsState extends State<Buttons> with WidgetsBindingObserver {
 
 
             ///начать запись
-            recordPositionButton(),
+            RecordPositionButton(),
           ],
         )
     );

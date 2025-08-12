@@ -1,7 +1,7 @@
 
 import 'dart:ui';
 
-import 'package:biketracker/variables.dart';
+import 'package:biketracker/utilites/variables.dart';
 import 'package:biketracker/widgets/button.dart';
 import 'package:biketracker/widgets/height_margin.dart';
 import 'package:flutter/cupertino.dart';

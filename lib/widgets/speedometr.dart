@@ -3,10 +3,12 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 import '../main.dart';
-import '../utils.dart';
+import '../utilites/utils.dart';
 
 
 class Speedometr extends StatelessWidget {
+  const Speedometr({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -87,10 +89,6 @@ class Speedometr extends StatelessWidget {
 
                                     const Text('Общий пробег',style: TextStyle(fontSize: 10, color:Colors.white)),
                                     Text('${(trackModel.cumulativeDistance / 1000 ).round()} км',style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, height: 1, color: Colors.lightGreenAccent)),
-
-                                    const Text('Сожжено каллорий',style: TextStyle(fontSize: 10, color:Colors.white)),
-                                    Text('${trackModel.caloriesBurned.toStringAsFixed(0)} ккал',style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, height: 1, color: Colors.lightGreenAccent)),
-
                                   ],
                                 ),
                                 SizedBox(height: !MainPageState.instance.portrait ? MediaQuery.of(context).size.height /3.5 : MediaQuery.of(context).size.width /3.5,),
@@ -108,11 +106,14 @@ class Speedometr extends StatelessWidget {
                   const SizedBox(width: 20,),
                   Column(
                     children: [
-                      const Text('Текущее время',style: TextStyle(fontSize: 10, color:Colors.white)),
-                      Text(DateFormat.Hms('ru').format(DateTime.now()),style: const TextStyle(fontSize: 15,fontWeight: FontWeight.bold, height: 1, color: Colors.lightGreenAccent)),
+                      const Text('Сожжено каллорий',style: TextStyle(fontSize: 10, color:Colors.white)),
+                      Text('${trackModel.caloriesBurned.toStringAsFixed(0)} ккал',style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, height: 1, color: Colors.lightGreenAccent)),
+
+                      // const Text('Текущее время',style: TextStyle(fontSize: 10, color:Colors.white)),
+                      // Text(DateFormat.Hms('ru').format(DateTime.now()),style: const TextStyle(fontSize: 15,fontWeight: FontWeight.bold, height: 1, color: Colors.lightGreenAccent)),
                     ],
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Column(
                     //crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

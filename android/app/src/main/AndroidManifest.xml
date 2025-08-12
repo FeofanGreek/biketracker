@@ -15,6 +15,15 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.health.WRITE_ELEVATION_GAINED"/>
+    <uses-permission android:name="android.permission.health.WRITE_DISTANCE"/>
+    <uses-permission android:name="android.permission.health.WRITE_FLOORS_CLIMBED"/>
+    <uses-permission android:name="android.permission.health.WRITE_EXERCISE"/>
+    <uses-permission android:name="android.permission.health.WRITE_ACTIVE_CALORIES_BURNED"/>
+    <uses-permission android:name="android.permission.health.WRITE_EXERCISE_ROUTE"/>
+    <uses-permission android:name="android.permission.health.WRITE_SPEED"/>
+    <uses-permission android:name="android.permission.health.WRITE_TOTAL_CALORIES_BURNED"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <queries>
         <intent>
@@ -34,6 +43,12 @@
                 android:name="android.intent.action.VIEW"/>
             <data
                 android:scheme="mailto"/>
+        </intent>
+    </queries>
+    <queries>
+        <package android:name="com.google.android.apps.healthdata" />
+        <intent>
+            <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
         </intent>
     </queries>
     <application
@@ -78,5 +93,15 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <activity-alias
+            android:name="ViewPermissionUsageActivity"
+            android:exported="true"
+            android:targetActivity=".MainActivity"
+            android:permission="android.permission.START_VIEW_PERMISSION_USAGE">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE" />
+                <category android:name="android.intent.category.HEALTH_PERMISSIONS" />
+            </intent-filter>
+        </activity-alias>
     </application>
 </manifest>

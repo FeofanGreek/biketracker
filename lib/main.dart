@@ -1,13 +1,14 @@
-
 import 'dart:async';
 import 'dart:math';
 
-import 'package:biketracker/screens/buttons.dart';
+import 'package:biketracker/screens/p2p/src/call_sample/call_sample.dart';
+import 'package:biketracker/widgets/buttons.dart';
 import 'package:biketracker/screens/graphics_view.dart';
-import 'package:biketracker/screens/table_view.dart';
-import 'package:biketracker/utils.dart';
-import 'package:biketracker/variables.dart';
-import 'package:biketracker/widgets/speed_limit.dart';
+import 'package:biketracker/widgets/table_view.dart';
+import 'package:biketracker/services/db_model.dart';
+import 'package:biketracker/services/track_model.dart';
+import 'package:biketracker/utilites/utils.dart';
+import 'package:biketracker/utilites/variables.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,16 +17,18 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
-import 'geolocation.dart';
-import 'model.dart';
+import 'services/geolocation.dart';
+//import 'model.dart';
 import 'package:go_router/go_router.dart';
 
 
 import 'dart:core';
 import 'package:flutter_background/flutter_background.dart';
 
-import 'p2p/main_video_call.dart';
-import 'p2p/src/call_sample/call_sample.dart';
+//import 'p2p/main_video_call.dart';
+//import 'p2p/src/call_sample/call_sample.dart';
+
+late SharedPreferences prefs;
 
 
 
@@ -49,23 +52,20 @@ DbDriver db = DbDriver();
 ViewTunes viewTunes = ViewTunes();
 
 
-
-
-
 /// описываем роутинги при запуске по ссылке
 final router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (_, __) => const MyApp(),
+      builder: (_, __) => const MainPage(),
       routes: [
         GoRoute(
           path: 'videocall',
-          builder: (_, __) => CallSample(host: '141.8.199.89'),
+          builder: (_, __) => const CallSample(host: '141.8.199.89'),
         ),
         GoRoute(
           path: 'getsharedroute',
-          builder: (_, __) => const MyApp(),
+          builder: (_, __) => const MainPage(),
         ),
       ],
     ),
@@ -82,6 +82,7 @@ void main() {
   } else if (WebRTC.platformIsAndroid) {
     //startForegroundService();
   }
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,
     DeviceOrientation.landscapeRight,
@@ -89,24 +90,21 @@ void main() {
     DeviceOrientation.portraitUp,
   ])
       .then((_) {
-    runApp(MaterialApp.router(
-        debugShowCheckedModeBanner: false,
-        routerConfig: router,
-      title: 'Велосипедный трекер',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        Locale('ru', ''),
+    runApp(
+        MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          routerConfig: router,
+          title: 'Велосипедный трекер',
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('ru', ''),
 
-      ],
-    ));
+          ],
+        ));
   });
 }
 
@@ -127,34 +125,7 @@ Future<bool> startForegroundService() async {
 
 
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
 
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return
-      MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Велосипедный трекер',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        Locale('ru', ''),
-
-      ],
-      home: const MainPage()
-        //home: const P2PApp()
-    );
-  }
-}
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key,});
@@ -166,39 +137,39 @@ class MainPage extends StatefulWidget {
 class MainPageState extends State<MainPage> with WidgetsBindingObserver {
   static late MainPageState instance;
   double screenWidth = 0.0;
-  bool showCart = true;
+  bool showChart = true;
 
-setter(){
-  if(mounted)setState(() {});
-}
+  setter(){
+    if(mounted)setState(() {});
+  }
 
-openVariables()async {
+  openVariables()async {
     prefs = await SharedPreferences.getInstance();
-}
+  }
 
-bool portrait = true;
+  bool portrait = true;
 
-showSnack() {
-  Timer(const Duration(seconds: 1), () {
-    if (viewTunes.mapTable == 0) {
-      Random random = Random();
-      int randomNumber = random.nextInt(promts_map.length - 1);
-      snackBarShow(context, promts_map[randomNumber]);
-    } else {
-      Random random = Random();
-      int randomNumber = random.nextInt(promts_table.length - 1);
-      snackBarShow(context, promts_table[randomNumber]);
-    }
-  });
-}
+  showSnack() {
+    Timer(const Duration(seconds: 1), () {
+      if (viewTunes.mapTable == 0) {
+        Random random = Random();
+        int randomNumber = random.nextInt(promts_map.length - 1);
+        snackBarShow(context, promts_map[randomNumber]);
+      } else {
+        Random random = Random();
+        int randomNumber = random.nextInt(promts_table.length - 1);
+        snackBarShow(context, promts_table[randomNumber]);
+      }
+    });
+  }
 
   @override
   void initState() {
     viewTunes.initTunes();
     WidgetsBinding.instance.addObserver(this);
 
-  instance = this;
-  ///проверить доступ к геолокаци
+    instance = this;
+    ///проверить доступ к геолокаци
     startGeolocation(context);
     ///создать доступ к переменным средам, чтоб выыудить пробег устройства
     openVariables();
@@ -258,24 +229,32 @@ showSnack() {
     final Orientation orientation = MediaQuery.of(context).orientation;
     portrait = orientation == Orientation.portrait;
     return Scaffold(
-      backgroundColor: Colors.blueGrey,
-      body: viewTunes.mapTable == 0 ? Stack(
-        children: [
-          GraphicsView(),
-          const Buttons(),
-          Positioned(
-            top: portrait ? MediaQuery.of(context).size.height / 2 - 20 : MediaQuery.of(context).size.height,
-              child: const SpeedControlSlider()),
+        appBar: AppBar(
+          toolbarHeight: 0,
+          backgroundColor: Colors.black,
+          systemOverlayStyle: const SystemUiOverlayStyle(
+            statusBarBrightness: Brightness.dark,
+            statusBarIconBrightness: Brightness.dark,
+          ),
+        ),
+        backgroundColor: Colors.black,
+        body: viewTunes.mapTable == 0 ? const Stack(
+          children: [
+            GraphicsView(),
+            Buttons(),
+            // Positioned(
+            //   top: portrait ? MediaQuery.of(context).size.height / 2 - 20 : MediaQuery.of(context).size.height,
+            //     child: const SpeedControlSlider()),
 
-        ],
-      )
-          : const Stack(
+          ],
+        )
+            : const Stack(
           children: [
             TableView(),
             Buttons(),
 
           ],
-      )
+        )
     );
   }
 }

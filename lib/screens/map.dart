@@ -7,10 +7,17 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:vector_map_tiles/vector_map_tiles.dart';
 
-import 'main.dart';
+import '../main.dart';
 
 
-
+Future<Style> _readStyle() =>
+    StyleReader(///https://api.mapbox.com/styles/v1/putikoff/clvauocc800um01pka3d3bsss.html?title=view&access_token=pk.eyJ1IjoicHV0aWtvZmYiLCJhIjoiY2x1cnp0cXdjMGNkYjJxbGdjaDJqaWVxcyJ9._iVV1vIjaVLrLTWXqnfwkw&zoomwheel=true&fresh=true#15.8/59.959122/30.316377
+      uri: 'mapbox://styles/putikoff/clvauocc800um01pka3d3bsss?access_token={key}',
+      // ignore: undefined_identifier
+      apiKey: 'pk.eyJ1IjoicHV0aWtvZmYiLCJhIjoiY2x1cnp0cXdjMGNkYjJxbGdjaDJqaWVxcyJ9._iVV1vIjaVLrLTWXqnfwkw',
+      //logger: Logger.console()
+    )
+        .read();
 
 class MapFlutter extends StatefulWidget {
   const MapFlutter({super.key});
@@ -22,37 +29,28 @@ class MapFlutter extends StatefulWidget {
 
 class MapFlutterState extends State<MapFlutter> {
 
-  static late MapFlutterState instance;
   Style? _style;
 
-  Future<Style> _readStyle() =>
-      StyleReader(///https://api.mapbox.com/styles/v1/putikoff/clvauocc800um01pka3d3bsss.html?title=view&access_token=pk.eyJ1IjoicHV0aWtvZmYiLCJhIjoiY2x1cnp0cXdjMGNkYjJxbGdjaDJqaWVxcyJ9._iVV1vIjaVLrLTWXqnfwkw&zoomwheel=true&fresh=true#15.8/59.959122/30.316377
-        uri: 'mapbox://styles/putikoff/clvauocc800um01pka3d3bsss?access_token={key}',
-        // ignore: undefined_identifier
-        apiKey: 'pk.eyJ1IjoicHV0aWtvZmYiLCJhIjoiY2x1cnp0cXdjMGNkYjJxbGdjaDJqaWVxcyJ9._iVV1vIjaVLrLTWXqnfwkw',
-        //logger: Logger.console()
-      )
-          .read();
+
 
   void _initStyle() async {
     try {
       _style = await _readStyle();
     } catch (e, stack) {
-      // ignore: avoid_print
       debugPrint(e.toString());
-      // ignore: avoid_print
       debugPrint(stack.toString());
-      //_error = e;
     }
     if(mounted)setState(() {});
   }
 
-
+  void setter(){
+    if(mounted)setState(() {});
+  }
 
 
   @override
   void initState() {
-    instance = this;
+    trackModel.addListener(setter);
     _initStyle();
     super.initState();
 
@@ -62,7 +60,6 @@ class MapFlutterState extends State<MapFlutter> {
 
   @override
   void didUpdateWidget(covariant MapFlutter oldWidget) {
-
     super.didUpdateWidget(oldWidget);
   }
 
@@ -70,6 +67,15 @@ class MapFlutterState extends State<MapFlutter> {
   void dispose() {
     super.dispose();
   }
+
+  Widget get background => VectorTileLayer(
+    tileProviders: _style!.providers,
+    theme: _style!.theme,
+    //sprites: _style!.sprites,
+    maximumZoom: 22,
+    tileOffset: TileOffset.mapbox,
+    layerMode: VectorTileLayerMode.vector,
+  );
 
 
   @override
@@ -82,9 +88,9 @@ class MapFlutterState extends State<MapFlutter> {
             trackModel.targetCoords = coords;
             MainPageState.instance.setter();
           },
-            initialCenter: trackModel.currenLocation,
-            initialZoom: 18,
-            maxZoom: 22,
+          initialCenter: trackModel.currenLocation,
+          initialZoom: 18,
+          maxZoom: 22,
           interactionOptions: const InteractionOptions(
             flags: InteractiveFlag.drag |
             InteractiveFlag.flingAnimation |
@@ -94,26 +100,13 @@ class MapFlutterState extends State<MapFlutter> {
           ),
 
         ),
-        // nonRotatedChildren: [
-        //       Positioned(
-        //       top:10,
-        //       right: 10,
-        //           child:CompassWidget()
-        //       ),
-        //     ],
         children: [
-          VectorTileLayer(
-              tileProviders: _style!.providers,
-              theme: _style!.theme,
-              sprites: _style!.sprites,
-              maximumZoom: 22,
-              tileOffset: TileOffset.mapbox,
-              layerMode: VectorTileLayerMode.vector),
+          background,
 
           if((trackModel.ploylinePositions??[]).isNotEmpty)PolylineLayer(
               polylines: [
                 Polyline(
-                    points: trackModel.ploylinePositions??[],
+                    points: trackModel.ploylinePositions ?? [],
                     strokeWidth: 4,
                     color: Colors.lightGreenAccent
                 )
@@ -134,11 +127,11 @@ class MapFlutterState extends State<MapFlutter> {
                     child: Transform.rotate(
                         angle: trackModel.azimuth * pi / 180,
                         child:GestureDetector(
-    onTap: (){
-      trackModel.targetCoords = const LatLng(0.0, 0.0);
-    },
+                          onTap: (){
+                            trackModel.targetCoords = const LatLng(0.0, 0.0);
+                          },
                           child: const Icon(CupertinoIcons.star, color: Colors.yellow,),
-    )
+                        )
                     )
 
                 )
@@ -149,7 +142,7 @@ class MapFlutterState extends State<MapFlutter> {
               right: 10,
               child:CompassWidget()
           ),
-      ]
+        ]
     );
   }
 }

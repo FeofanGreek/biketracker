@@ -5,13 +5,13 @@ import 'package:flutter/services.dart';
 import '../main.dart';
 
 
-class recordPositionButton extends StatefulWidget {
+class RecordPositionButton extends StatefulWidget {
 
 
   @override
-  _recordPositionButtonState createState() => _recordPositionButtonState();
+  RecordPositionButtonState createState() => RecordPositionButtonState();
 }
-class _recordPositionButtonState extends State<recordPositionButton> {
+class RecordPositionButtonState extends State<RecordPositionButton> {
 
   late Timer colorTimer;
   int colorCounter = 100;

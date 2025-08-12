@@ -1,7 +1,7 @@
 import 'package:geolocator/geolocator.dart';
 
-import 'dialog.dart';
-import 'main.dart';
+import '../dialog.dart';
+import '../main.dart';
 
 final LocationSettings locationSettings = AppleSettings(
     accuracy: LocationAccuracy.bestForNavigation,

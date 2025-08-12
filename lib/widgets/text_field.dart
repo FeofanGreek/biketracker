@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'dart:ui';
-import '../variables.dart';
+import '../utilites/variables.dart';
 
 ///поле ввода
 ///надо маску

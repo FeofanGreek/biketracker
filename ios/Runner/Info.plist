@@ -40,6 +40,11 @@
 	<true/>
     <key>NSBluetoothAlwaysUsageDescription</key>
         <string>Для подключения к гарнитурам Bluetooth, Smart часам, силовым педалям, разрешите доступ к Bluetooth</string>
+        <key>NSBluetoothPeripheralUsageDescription</key>
+        <string>Велосипедному трекеру требуется доступ к Bluetooth для подключения к вашим датчикам (скорости, каденса, мощности) и другим Bluetooth-совместимым устройствам, чтобы точно отслеживать ваши поездки.</string>
+
+        <key>NSMotionUsageDescription</key>
+        <string>Приложение использует данные о движении вашего устройства для автоматического определения начала и остановки велосипедной активности, что позволяет более точно отслеживать ваши поездки и экономить заряд батареи.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -62,5 +67,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSHealthShareUsageDescription</key>
+    <string>Приложение добавляет данные о вашей активности (поездке на велосипеде) в Apple Health дав разрешение вы будете видеть свою активность при поездках</string>
+    <key>NSHealthUpdateUsageDescription</key>
+    <string>Приложение добавляет данные о вашей активности (поездке на велосипеде) в Apple Health дав разрешение вы будете видеть свою активность при поездках</string>
 </dict>
 </plist>
