@@ -183,6 +183,7 @@ class Track with ChangeNotifier{
       //Двигаем карту только когда Пишем трек
      if(recordInProgress) {
        controllerMap.move(currenLocation, controllerMap.camera.zoom);
+
      }
     } catch (e) {
       debugPrint(e.toString());
