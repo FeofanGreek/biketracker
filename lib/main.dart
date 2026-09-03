@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:biketracker/screens/p2p/src/call_sample/call_sample.dart';
+import 'package:biketracker/services/nearby/nearby_service.dart';
 import 'package:biketracker/widgets/buttons.dart';
 import 'package:biketracker/screens/graphics_view.dart';
 import 'package:biketracker/widgets/table_view.dart';
@@ -50,6 +51,8 @@ Track trackModel = Track(
 DbDriver db = DbDriver();
 
 ViewTunes viewTunes = ViewTunes();
+
+NearbyController nearbyBikers = NearbyController();
 
 
 /// описываем роутинги при запуске по ссылке
@@ -167,19 +170,16 @@ class MainPageState extends State<MainPage> with WidgetsBindingObserver {
   void initState() {
     viewTunes.initTunes();
     WidgetsBinding.instance.addObserver(this);
-
     instance = this;
     ///проверить доступ к геолокаци
     startGeolocation(context);
     ///создать доступ к переменным средам, чтоб выыудить пробег устройства
     openVariables();
     ///проверить наличие БД
-
     db.setdb();
     WakelockPlus.enable();
     WakelockPlus.toggle(enable: true);
     super.initState();
-
     showSnack();
   }
 
@@ -242,10 +242,6 @@ class MainPageState extends State<MainPage> with WidgetsBindingObserver {
           children: [
             GraphicsView(),
             Buttons(),
-            // Positioned(
-            //   top: portrait ? MediaQuery.of(context).size.height / 2 - 20 : MediaQuery.of(context).size.height,
-            //     child: const SpeedControlSlider()),
-
           ],
         )
             : const Stack(

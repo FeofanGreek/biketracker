@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'dart:math' as math;
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import '../main.dart';
@@ -25,20 +26,22 @@ class Odometer extends StatefulWidget {
 class OdometerState extends State<Odometer> {
   late double _speedLimit;
 
-  void setter(){
-    if(mounted)setState(() {});
-  }
+
 
   double currentSpeed = 0;
 
   @override
   void initState() {
     trackModel.addListener(updateOdometer);
-
     super.initState();
     _speedLimit = widget.speedLimit;
   }
 
+  @override
+  void dispose() {
+    trackModel.removeListener(updateOdometer);
+    super.dispose();
+  }
 
   final Iterable<Duration> pauses = [
     const Duration(milliseconds: 500),
@@ -52,6 +55,7 @@ class OdometerState extends State<Odometer> {
       setState(() {
         if(trackModel.speed > _speedLimit && _speedLimit > 5){
           Vibrate.vibrateWithPauses(pauses);
+          SystemSound.play(SystemSoundType.alert);
         }
       });
     }

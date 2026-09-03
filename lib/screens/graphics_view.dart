@@ -19,16 +19,13 @@ class GraphicsView extends StatelessWidget {
           maxSpeed: 70,
           speedLimit: trackModel.speedLimit,
           onSpeedLimitChanged: (value){
-          print(value);
           trackModel.speedLimit = value;
           },
         ),
-        //Speedometr(),
         const Expanded(
           child: MapFlutter(),
         ),
-        ///график отображать в портретной ориентации
-        if(MainPageState.instance.showChart) const LineChartWidget()
+
       ],
     ) : Row(
       children: [
@@ -36,7 +33,6 @@ class GraphicsView extends StatelessWidget {
           maxSpeed: 70,
           speedLimit: trackModel.speedLimit,
           onSpeedLimitChanged: (value){
-            print(value);
             trackModel.speedLimit = value;
           },
         ),

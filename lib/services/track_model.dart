@@ -170,6 +170,7 @@ class Track with ChangeNotifier{
     }
     azimuth = position.heading;
     currenLocation = LatLng(position.latitude, position.longitude);
+    unawaited(nearbyBikers.sendPositions(position));
 
     if (ploylinePositions!.length > 2 && trackID == 0 && recordInProgress) {
       double tempDistance = Geolocator.distanceBetween(currenLocation.latitude, currenLocation.longitude, ploylinePositions!.last.latitude, ploylinePositions!.last.longitude);
@@ -179,9 +180,11 @@ class Track with ChangeNotifier{
     trackID == 0 && recordInProgress ? ploylinePositions!.add(currenLocation) : null;
     try {
       //trackID == 0 ?
-      controllerMap.move(currenLocation, controllerMap.camera.zoom)
+     if(recordInProgress) {
+       controllerMap.move(currenLocation, controllerMap.camera.zoom)
           //: null
       ;
+     }
     } catch (e) {
       debugPrint(e.toString());
     }

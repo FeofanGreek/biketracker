@@ -62,23 +62,23 @@ class ButtonsState extends State<Buttons> with WidgetsBindingObserver {
                     ),
                     onChanged: (int? value) {},
                     items: [
-                      DropdownMenuItem<int>(
-                        value: 1,
-                        child:  ///выключить включить график высот
-                        IconButton(
-                          style: TextButton.styleFrom(
-                            side: const BorderSide(color: Colors.white),
-                            foregroundColor: Colors.white,
-                            backgroundColor: Colors.orange,
-                          ),
-                          onPressed: (){
-                            MainPageState.instance.showChart = !MainPageState.instance.showChart;
-                            MainPageState.instance.setter();
-                            Navigator.pop(context);
-                          },
-                          icon: const Icon(Icons.show_chart),
-                        ),
-                      ),
+                      // DropdownMenuItem<int>(
+                      //   value: 1,
+                      //   child:  ///выключить включить график высот
+                      //   IconButton(
+                      //     style: TextButton.styleFrom(
+                      //       side: const BorderSide(color: Colors.white),
+                      //       foregroundColor: Colors.white,
+                      //       backgroundColor: Colors.orange,
+                      //     ),
+                      //     onPressed: (){
+                      //       MainPageState.instance.showChart = !MainPageState.instance.showChart;
+                      //       MainPageState.instance.setter();
+                      //       Navigator.pop(context);
+                      //     },
+                      //     icon: const Icon(Icons.show_chart),
+                      //   ),
+                      // ),
                       // DropdownMenuItem<int>(
                       //   value: 3,
                       //   child:  ///кнопки чата

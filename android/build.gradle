@@ -3,12 +3,26 @@ allprojects {
         google()
         mavenCentral()
     }
+    configurations.all {
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            if (details.requested.group == 'androidx.core' && details.requested.name.startsWith('core')) {
+                details.useVersion '1.15.0'
+            }
+            if (details.requested.group == 'androidx.browser' && details.requested.name == 'browser') {
+                details.useVersion '1.8.0'
+            }
+        }
+    }
 }
 
 rootProject.buildDir = '../build'
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
+
+
+
+
 subprojects {
     project.evaluationDependsOn(':app')
 }

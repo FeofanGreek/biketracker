@@ -54,6 +54,7 @@
     <application
         android:label="Велотрекер"
         android:name="${applicationName}"
+        android:extractNativeLibs="false"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

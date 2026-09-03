@@ -71,5 +71,14 @@
     <string>Приложение добавляет данные о вашей активности (поездке на велосипеде) в Apple Health дав разрешение вы будете видеть свою активность при поездках</string>
     <key>NSHealthUpdateUsageDescription</key>
     <string>Приложение добавляет данные о вашей активности (поездке на велосипеде) в Apple Health дав разрешение вы будете видеть свою активность при поездках</string>
+    <key>NSBonjourServices</key>
+    <array>
+        <string>_bike-con._tcp</string>
+    </array>
+    <key>UIRequiresPersistentWiFi</key>
+    <true/>
+    <key>NSBluetoothAlwaysUsageDescription</key>
+    <string>Предоставьте доступ к обнаружению устройств поблизости и вы сможете видеть на карте участников вашего велопробега.</string>
+
 </dict>
 </plist>
