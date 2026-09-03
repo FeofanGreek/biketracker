@@ -19,6 +19,21 @@ class Buttons extends StatefulWidget {
 
 class ButtonsState extends State<Buttons> with WidgetsBindingObserver {
 
+  @override
+  void initState() {
+    super.initState();
+    nearbyBikers.addListener(_onNearbyChanged);
+  }
+
+  @override
+  void dispose() {
+    nearbyBikers.removeListener(_onNearbyChanged);
+    super.dispose();
+  }
+
+  void _onNearbyChanged() {
+    if (mounted) setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -128,6 +143,23 @@ class ButtonsState extends State<Buttons> with WidgetsBindingObserver {
                             );
                           },
                           icon: const Icon(CupertinoIcons.square_list),
+                        ),
+                      ),
+                      DropdownMenuItem<int>(
+                        value: 7,
+                        child:  ///поиск устройств рядом
+                        IconButton(
+                          style: TextButton.styleFrom(
+                            side: const BorderSide(color: Colors.white),
+                            foregroundColor: Colors.white,
+                            backgroundColor: nearbyBikers.isRunning ? Colors.green : Colors.orange,
+                          ),
+                          onPressed: () async {
+                            Navigator.pop(context);
+                            await nearbyBikers.toggle();
+                          },
+                          icon: Icon(nearbyBikers.isRunning ? Icons.radar : Icons.radar_outlined),
+                          tooltip: nearbyBikers.isRunning ? 'Остановить поиск рядом' : 'Поиск устройств рядом',
                         ),
                       ),
                       DropdownMenuItem<int>(

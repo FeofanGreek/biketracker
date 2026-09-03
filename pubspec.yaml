@@ -1,7 +1,7 @@
 name: biketracker
 description: Вело трекер
 
-version: 1.0.9+16
+version: 1.0.10+18
 
 environment:
   sdk: '>=3.0.3 <4.0.0'
