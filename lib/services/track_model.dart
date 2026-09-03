@@ -180,6 +180,7 @@ class Track with ChangeNotifier{
     trackID == 0 && recordInProgress ? ploylinePositions!.add(currenLocation) : null;
     try {
       //trackID == 0 ?
+      //Двигаем карту только когда Пишем трек
      if(recordInProgress) {
        controllerMap.move(currenLocation, controllerMap.camera.zoom)
           //: null
