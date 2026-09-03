@@ -1,18 +1,13 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../dialog.dart';
 import '../main.dart';
-//import '../p2p/src/call_sample/call_sample.dart';
+import '../screens/track_history.dart';
 import '../utilites/utils.dart';
 import 'record_position_button.dart';
-import 'text_field.dart';
 
 
 class Buttons extends StatefulWidget {
@@ -123,103 +118,14 @@ class ButtonsState extends State<Buttons> with WidgetsBindingObserver {
                             foregroundColor: Colors.white,
                             backgroundColor: Colors.orange,
                           ),
-                          onPressed: ()async{
+                          onPressed: () {
                             Navigator.pop(context);
-                            await db.getTrackList().then((value) => showAlertDialog(
-                                context: context,
-                                title: 'История треков',
-                                showBottomButton: false,
-                                showTopButton: false,
-                                showCloseButton: true,
-                                dialogBody: SizedBox(
-                                  width: 350,
-                                  height: 350,
-                                  child: ListView.separated(
-                                    physics: const ScrollPhysics(),
-                                    itemCount: value.length,
-                                    shrinkWrap: true,
-                                    reverse: true,
-                                    separatorBuilder: (BuildContext context, int index) =>
-                                    const Divider(thickness: 1, color: Colors.white),
-                                    itemBuilder: (context, index) {
-                                      return GestureDetector(
-                                        onTap:()async{
-                                          trackModel = value[index];
-                                          MainPageState.instance.setter();
-                                          Timer(const Duration(seconds: 1),()async{
-                                            try{
-                                              CameraFit fit = CameraFit.bounds(bounds: LatLngBounds.fromPoints(trackModel.ploylinePositions!));
-                                              var cZ = trackModel.controllerMap.fitCamera(fit);//    .centerZoomFitBounds(LatLngBounds.fromPoints(trackModel.ploylinePositions!));
-
-
-                                              //trackModel.controllerMap.move(cZ.center, cZ.zoom - 1);
-                                              trackModel.controllerMap.moveAndRotate(trackModel.controllerMap.camera.center, trackModel.controllerMap.camera.zoom, 0.0);
-                                            }catch(e){
-                                              debugPrint(e.toString());
-                                            }
-
-                                            Navigator.pop(context);
-                                          });
-
-                                        },
-                                        child: Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                TextFieldBrand(
-                                                  title: 'Название трека',
-                                                  hint: 'Название трека',
-                                                  maskType: 6,
-                                                  keyType: 0,
-                                                  func: (String _value) {
-                                                    value[index].name = _value;
-                                                    db.updateTrack(value[index]);
-                                                  },
-                                                  width: 250,
-                                                  initialValue: value[index].name ?? '',),
-                                                const SizedBox(height: 5,),
-                                                Row(
-                                                  children: [
-                                                    const Icon(CupertinoIcons.speedometer, color: Colors.white, size: 12,),
-                                                    Text('max: ${value[index].maxSpeed!.round()} km/h, ', style: TextStyle(fontSize: 11, color:Colors.white)),
-                                                    const Icon(CupertinoIcons.speedometer, color: Colors.white, size: 12,),
-                                                    Text('mid: ${value[index].middleSpeed!.round()} km/h, ', style: TextStyle(fontSize: 11, color:Colors.white)),
-
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    const Icon(CupertinoIcons.resize_v, color: Colors.white, size: 12,),
-                                                    Text('max: ${value[index].maxHeight!.round()} m, ', style: TextStyle(fontSize: 11, color:Colors.white)),
-                                                    const Icon(CupertinoIcons.resize_h, color: Colors.white, size: 12,),
-                                                    Text('${(value[index].currentDistance! / 1000).round()} km, ', style: TextStyle(fontSize: 11, color:Colors.white)),
-                                                    const Icon(CupertinoIcons.clock, color: Colors.white, size: 12,),
-                                                    Text(printDuration(value[index].trackDuration!), style: TextStyle(fontSize: 11, color:Colors.white)),
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                            const Spacer(),
-                                            IconButton(
-                                                onPressed: ()async{
-                                                  await db.deleteRecord(value[index]).then((value){
-                                                    SystemSound.play(SystemSoundType.click);
-                                                    Navigator.pop(context);
-                                                  });
-
-                                                },
-                                                icon: const Icon(CupertinoIcons.trash, color: Colors.blue,)
-                                            )
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                )
-                            ));
-
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const TrackHistoryScreen(),
+                              ),
+                            );
                           },
                           icon: const Icon(CupertinoIcons.square_list),
                         ),

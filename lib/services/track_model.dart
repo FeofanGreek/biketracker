@@ -7,9 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
 import '../main.dart';
-import '../screens/map.dart';
 import '../utilites/calories_calculator.dart';
-import '../widgets/odometer.dart';
 import 'health_data_service.dart'; // Импортируем новый сервис
 
 
@@ -146,6 +144,31 @@ class Track with ChangeNotifier{
     startTime = DateTime.now();
     startCircle = DateTime.now();
     heightStory = [];
+  }
+
+  void loadFrom(Track other) {
+    trackID = other.trackID;
+    name = other.name;
+    startTime = other.startTime;
+    stopTime = other.stopTime;
+    startCircle = other.startCircle;
+    speed = other.speed;
+    maxSpeed = other.maxSpeed;
+    middleSpeed = other.middleSpeed;
+    maxHeight = other.maxHeight;
+    heightStory = List.from(other.heightStory);
+    trackDuration = other.trackDuration;
+    circleDuration = other.circleDuration;
+    circlesStory = List.from(other.circlesStory);
+    currentDistance = other.currentDistance;
+    cumulativeDistance = other.cumulativeDistance;
+    azimuth = other.azimuth;
+    positions = List.from(other.positions);
+    ploylinePositions = List.from(other.ploylinePositions ?? []);
+    if (ploylinePositions != null && ploylinePositions!.isNotEmpty) {
+      currenLocation = ploylinePositions!.first;
+    }
+    update();
   }
 
   Future<void> setValues(Position position) async {

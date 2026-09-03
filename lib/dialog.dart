@@ -54,7 +54,7 @@ showAlertDialog({
                         Row(
                           children: [
                             if(showCloseButton)const Spacer(),
-                            Container(
+                            SizedBox(
                               width: 210,
                               child: Text(title, style: white15_500,),
                             ),

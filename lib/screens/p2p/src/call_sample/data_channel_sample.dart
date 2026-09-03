@@ -49,7 +49,7 @@ class _DataChannelSampleState extends State<DataChannelSample> {
           content: Text("accept?"),
           actions: <Widget>[
             MaterialButton(
-              child: Text(
+              child: const Text(
                 'Reject',
                 style: TextStyle(color: Colors.red),
               ),
@@ -73,7 +73,7 @@ class _DataChannelSampleState extends State<DataChannelSample> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("title"),
+          title: const Text("title"),
           content: Text("waiting"),
           actions: <Widget>[
             TextButton(

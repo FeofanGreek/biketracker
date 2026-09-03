@@ -24,27 +24,57 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>FlutterDeepLinkingEnabled</key>
+	<true/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Предоставьте доступ к обнаружению устройств поблизости и вы сможете видеть на карте участников вашего велопробега.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Велосипедному трекеру требуется доступ к Bluetooth для подключения к вашим датчикам (скорости, каденса, мощности) и другим Bluetooth-совместимым устройствам, чтобы точно отслеживать ваши поездки.</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_bike-con._tcp</string>
+	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Для видеозвонков из приложения нам необходим доступ к видеокамере вашего устройства</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Приложение добавляет данные о вашей активности (поездке на велосипеде) в Apple Health дав разрешение вы будете видеть свою активность при поездках</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>Приложение добавляет данные о вашей активности (поездке на велосипеде) в Apple Health дав разрешение вы будете видеть свою активность при поездках</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Для получения информации о вашем перемещении в пространстве необходим доступ к местоположению даже когда приложение свернуто</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Для получения информации о вашем перемещении в пространстве необходим доступ к местоположению даже когда приложение свернуто</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Для получения информации о вашем перемещении в пространстве необходим доступ к местоположению</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Для видеозвонков из приложения нам необходим доступ к видеокамере вашего устройства</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Для видеозвонков из приложения нам необходим доступ к микрофону вашего устройства</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Приложение использует данные о движении вашего устройства для автоматического определения начала и остановки велосипедной активности, что позволяет более точно отслеживать ваши поездки и экономить заряд батареи.</string>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+		<key>UISceneConfigurations</key>
+		<dict>
+			<key>UIWindowSceneSessionRoleApplication</key>
+			<array>
+				<dict>
+					<key>UISceneClassName</key>
+					<string>UIWindowScene</string>
+					<key>UISceneConfigurationName</key>
+					<string>flutter</string>
+					<key>UISceneDelegateClassName</key>
+					<string>FlutterSceneDelegate</string>
+					<key>UISceneStoryboardFile</key>
+					<string>Main</string>
+				</dict>
+			</array>
+		</dict>
+	</dict>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
-    <key>NSBluetoothAlwaysUsageDescription</key>
-        <string>Для подключения к гарнитурам Bluetooth, Smart часам, силовым педалям, разрешите доступ к Bluetooth</string>
-        <key>NSBluetoothPeripheralUsageDescription</key>
-        <string>Велосипедному трекеру требуется доступ к Bluetooth для подключения к вашим датчикам (скорости, каденса, мощности) и другим Bluetooth-совместимым устройствам, чтобы точно отслеживать ваши поездки.</string>
-
-        <key>NSMotionUsageDescription</key>
-        <string>Приложение использует данные о движении вашего устройства для автоматического определения начала и остановки велосипедной активности, что позволяет более точно отслеживать ваши поездки и экономить заряд батареи.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -54,7 +84,7 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
-	<key>FlutterDeepLinkingEnabled</key>
+	<key>UIRequiresPersistentWiFi</key>
 	<true/>
 	<key>UIStatusBarHidden</key>
 	<false/>
@@ -67,18 +97,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSHealthShareUsageDescription</key>
-    <string>Приложение добавляет данные о вашей активности (поездке на велосипеде) в Apple Health дав разрешение вы будете видеть свою активность при поездках</string>
-    <key>NSHealthUpdateUsageDescription</key>
-    <string>Приложение добавляет данные о вашей активности (поездке на велосипеде) в Apple Health дав разрешение вы будете видеть свою активность при поездках</string>
-    <key>NSBonjourServices</key>
-    <array>
-        <string>_bike-con._tcp</string>
-    </array>
-    <key>UIRequiresPersistentWiFi</key>
-    <true/>
-    <key>NSBluetoothAlwaysUsageDescription</key>
-    <string>Предоставьте доступ к обнаружению устройств поблизости и вы сможете видеть на карте участников вашего велопробега.</string>
-
 </dict>
 </plist>

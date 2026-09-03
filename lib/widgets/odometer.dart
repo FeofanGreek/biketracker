@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:math' as math;
-import 'package:flutter_vibrate/flutter_vibrate.dart';
+//import 'package:flutter_vibrate/flutter_vibrate.dart';
 import '../main.dart';
 import '../utilites/utils.dart';
 
@@ -54,7 +54,7 @@ class OdometerState extends State<Odometer> {
     if(mounted) {
       setState(() {
         if(trackModel.speed > _speedLimit && _speedLimit > 5){
-          Vibrate.vibrateWithPauses(pauses);
+          //Vibrate.vibrateWithPauses(pauses);
           SystemSound.play(SystemSoundType.alert);
         }
       });

@@ -23,6 +23,49 @@ subprojects {
 
 
 
+subprojects { project ->
+    afterEvaluate {
+        if (project.plugins.hasPlugin("com.android.application") ||
+                project.plugins.hasPlugin("com.android.library")) {
+            project.android.compileSdk = 36
+            project.android.compileOptions {
+                sourceCompatibility JavaVersion.VERSION_17
+                targetCompatibility JavaVersion.VERSION_17
+            }
+            if (project.android.namespace == null) {
+                def manifestFile = project.file("src/main/AndroidManifest.xml")
+                if (manifestFile.exists()) {
+                    def match = (manifestFile.text =~ /package\s*=\s*"([^"]+)"/)
+                    if (match.find()) {
+                        project.android.namespace = match.group(1)
+                    }
+                }
+                if (project.android.namespace == null) {
+                    project.android.namespace = "com.example.${project.name.replace('-', '_')}"
+                }
+            }
+        }
+    }
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach { task ->
+        task.doFirst {
+            if (project.name == "flutter_nearby_connections") {
+                def ktFile = project.file("src/main/kotlin/com/nankai/flutter_nearby_connections/FlutterNearbyConnectionsPlugin.kt")
+                if (ktFile.exists()) {
+                    def content = ktFile.text
+                    if (content.contains("import io.flutter.plugin.common.PluginRegistry.Registrar")) {
+                        content = content.replace("import io.flutter.plugin.common.PluginRegistry.Registrar", "// import io.flutter.plugin.common.PluginRegistry.Registrar")
+                        content = content.replaceAll(/(?s)@JvmStatic\s+fun registerWith\(registrar:\s*Registrar\)\s*\{[^}]*\}/, "")
+                        ktFile.text = content
+                    }
+                }
+            }
+        }
+        kotlinOptions {
+            jvmTarget = "17"
+        }
+    }
+}
+
 subprojects {
     project.evaluationDependsOn(':app')
 }

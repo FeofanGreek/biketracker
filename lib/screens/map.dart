@@ -8,7 +8,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:vector_map_tiles/vector_map_tiles.dart';
 
 import '../main.dart';
-//import '../secrets.dart';
+import '../secrets.dart';
 import '../widgets/chart_height.dart';
 
 Future<Style> _readStyle() => StyleReader(
@@ -38,8 +38,29 @@ class MapFlutterState extends State<MapFlutter> {
     if (mounted) setState(() {});
   }
 
+  void _fitTrackBounds() {
+    if (!trackModel.recordInProgress &&
+        (trackModel.ploylinePositions ?? []).isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        try {
+          final bounds = LatLngBounds.fromPoints(trackModel.ploylinePositions!);
+          final fit = CameraFit.bounds(
+            bounds: bounds,
+            padding: const EdgeInsets.all(30),
+          );
+          trackModel.controllerMap.fitCamera(fit);
+        } catch (e) {
+          debugPrint(e.toString());
+        }
+      });
+    }
+  }
+
   void setter() {
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {});
+      _fitTrackBounds();
+    }
   }
 
   @override
@@ -71,6 +92,9 @@ class MapFlutterState extends State<MapFlutter> {
         : FlutterMap(
             mapController: trackModel.controllerMap,
             options: MapOptions(
+              onMapReady: () {
+                _fitTrackBounds();
+              },
               onLongPress: (position, coords) {
                 trackModel.targetCoords = coords;
                 trackModel.update();

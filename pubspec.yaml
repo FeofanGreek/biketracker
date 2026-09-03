@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   permission_handler:
   intl:
   http:
@@ -42,10 +44,11 @@ dependencies:
   auto_size_text:
   #audioplayers: ^6.5.0
   health: 13.1.1
-  flutter_vibrate: ^1.4.0
+  #flutter_vibrate: ^1.4.0
   flutter_nearby_connections: ^1.1.2
   uuid: ^4.5.1
-  flutter_antplus: ^0.6.8+19
+  fit_sdk: ^0.3.0
+  file_picker: ^8.1.7
 
   cupertino_icons: ^1.0.2
 
@@ -53,6 +56,9 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+
+dependency_overrides:
+  permission_handler_android: 13.0.1
 
 flutter_native_splash:
   color: "#5E7280"
