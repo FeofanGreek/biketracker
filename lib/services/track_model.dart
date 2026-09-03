@@ -182,9 +182,7 @@ class Track with ChangeNotifier{
       //trackID == 0 ?
       //Двигаем карту только когда Пишем трек
      if(recordInProgress) {
-       controllerMap.move(currenLocation, controllerMap.camera.zoom)
-          //: null
-      ;
+       controllerMap.move(currenLocation, controllerMap.camera.zoom);
      }
     } catch (e) {
       debugPrint(e.toString());
