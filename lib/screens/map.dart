@@ -8,10 +8,11 @@ import 'package:latlong2/latlong.dart';
 import 'package:vector_map_tiles/vector_map_tiles.dart';
 
 import '../main.dart';
+import '../secrets.dart';
 import '../widgets/chart_height.dart';
 
 Future<Style> _readStyle() => StyleReader(
-      uri: 'mapbox://styles/putikoff/clvauocc800um01pka3d3bsss?access_token={key}',
+      uri: mapUri,
       // ignore: undefined_identifier
       apiKey: mapSecret,
       //logger: Logger.console()
